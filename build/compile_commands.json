@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/home/sevecl/Desktop/C/Project/26年校赛C题/build",
+  "command": "/usr/bin/aarch64-linux-gnu-g++ -isystem /usr/include/opencv4 -g -std=gnu++17 -o CMakeFiles/hit.dir/main.cpp.o -c /home/sevecl/Desktop/C/Project/26年校赛C题/main.cpp",
+  "file": "/home/sevecl/Desktop/C/Project/26年校赛C题/main.cpp",
+  "output": "CMakeFiles/hit.dir/main.cpp.o"
+},
+{
+  "directory": "/home/sevecl/Desktop/C/Project/26年校赛C题/build",
+  "command": "/usr/bin/aarch64-linux-gnu-g++ -isystem /usr/include/opencv4 -g -std=gnu++17 -o CMakeFiles/hit.dir/src/uart.cpp.o -c /home/sevecl/Desktop/C/Project/26年校赛C题/src/uart.cpp",
+  "file": "/home/sevecl/Desktop/C/Project/26年校赛C题/src/uart.cpp",
+  "output": "CMakeFiles/hit.dir/src/uart.cpp.o"
+},
+{
+  "directory": "/home/sevecl/Desktop/C/Project/26年校赛C题/build",
+  "command": "/usr/bin/aarch64-linux-gnu-g++ -isystem /usr/include/opencv4 -g -std=gnu++17 -o CMakeFiles/hit.dir/src/ImagePg.cpp.o -c /home/sevecl/Desktop/C/Project/26年校赛C题/src/ImagePg.cpp",
+  "file": "/home/sevecl/Desktop/C/Project/26年校赛C题/src/ImagePg.cpp",
+  "output": "CMakeFiles/hit.dir/src/ImagePg.cpp.o"
+},
+{
+  "directory": "/home/sevecl/Desktop/C/Project/26年校赛C题/build",
+  "command": "/usr/bin/aarch64-linux-gnu-g++ -isystem /usr/include/opencv4 -g -std=gnu++17 -o CMakeFiles/hit.dir/src/Laser_Position.cpp.o -c /home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.cpp",
+  "file": "/home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.cpp",
+  "output": "CMakeFiles/hit.dir/src/Laser_Position.cpp.o"
+},
+{
+  "directory": "/home/sevecl/Desktop/C/Project/26年校赛C题/build",
+  "command": "/usr/bin/aarch64-linux-gnu-g++ -isystem /usr/include/opencv4 -g -std=gnu++17 -o CMakeFiles/hit.dir/QA/Answer.cpp.o -c /home/sevecl/Desktop/C/Project/26年校赛C题/QA/Answer.cpp",
+  "file": "/home/sevecl/Desktop/C/Project/26年校赛C题/QA/Answer.cpp",
+  "output": "CMakeFiles/hit.dir/QA/Answer.cpp.o"
+}
+]

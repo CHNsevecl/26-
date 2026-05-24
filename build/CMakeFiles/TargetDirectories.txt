@@ -1,0 +1,3 @@
+/home/sevecl/Desktop/C/Project/26年校赛C题/build/CMakeFiles/hit.dir
+/home/sevecl/Desktop/C/Project/26年校赛C题/build/CMakeFiles/edit_cache.dir
+/home/sevecl/Desktop/C/Project/26年校赛C题/build/CMakeFiles/rebuild_cache.dir
