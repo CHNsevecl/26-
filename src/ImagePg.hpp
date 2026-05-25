@@ -6,9 +6,11 @@
 #include "mystruct.hpp"
 
 void morphologyProcess(cv::Mat& binary_frame, int kernel_size = 2);
-cv::Mat findContours(const cv::Mat& binary_frame ,const cv::Mat& frame_BGR,std::vector<std::vector<cv::Point>>& contours);
+cv::Mat findContours_and_Draw(const cv::Mat& binary_frame ,const cv::Mat& frame_BGR,std::vector<std::vector<cv::Point>>& contours);
 std::optional<std::vector<std::vector<cv::Point>>> selectBestContour(const std::vector<std::vector<cv::Point>>& contours, cv::Mat& frame_BGR, int lines = 4, int nums = 1, bool draw = false);
 std::optional<ROI_with_oringin> find_target_object( cv::Mat& frame_BGR, cv::Mat& frame_binary, int lines = 0, int roi_nums = 2);
+std::optional<ROI_with_oringin> find_object_positon_on_canvas(cv::Mat& frame_BGR, cv::Mat& frame_binary);
+
 
 
 

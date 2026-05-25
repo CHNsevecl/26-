@@ -393,6 +393,12 @@ CMakeFiles/hit.dir/main.cpp.o: \
  /usr/include/aarch64-linux-gnu/bits/termios-tcflow.h \
  /usr/include/aarch64-linux-gnu/bits/termios-misc.h \
  /usr/include/aarch64-linux-gnu/sys/ttydefaults.h \
+ /usr/include/aarch64-linux-gnu/sys/ioctl.h \
+ /usr/include/aarch64-linux-gnu/bits/ioctls.h \
+ /usr/lib/linux/uapi/arm64/asm/ioctls.h /usr/include/asm-generic/ioctls.h \
+ /usr/include/linux/ioctl.h /usr/lib/linux/uapi/arm64/asm/ioctl.h \
+ /usr/include/asm-generic/ioctl.h \
+ /usr/include/aarch64-linux-gnu/bits/ioctl-types.h \
  /home/sevecl/Desktop/C/Project/26年校赛C题/src/ImagePg.hpp \
  /usr/include/c++/14/optional \
  /home/sevecl/Desktop/C/Project/26年校赛C题/src/mystruct.hpp \

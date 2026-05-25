@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <termios.h>
+#include <sys/ioctl.h>
 #include <cstring>
 #include <opencv2/core.hpp> // 添加这一行，使得 cv::Point 能被识别
 
@@ -22,9 +23,8 @@ public:
 
     // 1. 初始化串口
     bool init(const char* port, int baudrate) {// /dev/serial0 -> ttyAMA10  主串口
-        // 打开设备
-        // 注意：去掉了 O_NDELAY，保持和参考程序一致
-        fd = open(port, O_RDWR | O_NOCTTY);
+        // 打开设备，使用非阻塞方式，避免接收时卡住主循环
+        fd = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
         if (fd == -1) {
             cout << "无法打开串口: " << port << endl;
             return false;
@@ -62,8 +62,8 @@ public:
         options.c_lflag &= ~(ICANON | ECHO); // 关闭规范模式和回显
 
         // 🔑 关键：设置超时 (复制参考程序的配置)
-        options.c_cc[VMIN] = 0;    // 不等待固定字节数
-        options.c_cc[VTIME] = 10;  // 1秒超时（单位0.1秒）
+        options.c_cc[VMIN] = 0;    // 非阻塞读取
+        options.c_cc[VTIME] = 0;    // 不等待超时
 
         // 应用配置
         tcsetattr(fd, TCSANOW, &options);
@@ -76,15 +76,18 @@ public:
     void send(const string& data) {
         if (fd != -1) {
             int result = write(fd, data.c_str(), data.length());
-            if (result == -1) {
-                cout << "发送数据失败" << endl;
-            } else {
-                cout << "发送数据:" << data << endl;
-            }
+            // if (result == -1) {
+            //     cout << "发送数据失败" << endl;
+            // } else {
+            //     cout << "发送数据:" << data << endl;
+            // }
         }
     }
+
+    // 3. 接收当前串口缓冲区中的数据
+    vector<string> receive();
     
-    // 3. 关闭串口
+    // 4. 关闭串口
     void close_port() {
         if (fd != -1) {
             ::close(fd);
@@ -94,5 +97,5 @@ public:
 };
 
 void info_to_MCU(UART& uart, const std::vector<std::string>& info);
-void send_direction_to_MCU(UART& uart,const cv::Point& direction,std::string start_bytes = "RP5",std::string end_bytes = "END");
+void send_direction_to_MCU(UART& uart,const cv::Point& direction,int question_id,std::string start_bytes,std::string end_bytes);
 #endif

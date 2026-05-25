@@ -1,4 +1,48 @@
 #include "ImagePg.hpp"
+#include <algorithm>
+
+static std::vector<cv::Point> orderRectanglePoints(const std::vector<cv::Point>& points) {
+    std::vector<cv::Point> ordered(4);
+
+    int top_left_index = 0;
+    int top_right_index = 0;
+    int bottom_left_index = 0;
+    int bottom_right_index = 0;
+
+    int min_sum = points[0].x + points[0].y;
+    int max_sum = min_sum;
+    int min_diff = points[0].x - points[0].y;
+    int max_diff = min_diff;
+
+    for (int i = 1; i < 4; ++i) {
+        const int sum = points[i].x + points[i].y;
+        const int diff = points[i].x - points[i].y;
+
+        if (sum < min_sum) {
+            min_sum = sum;
+            top_left_index = i;
+        }
+        if (sum > max_sum) {
+            max_sum = sum;
+            bottom_right_index = i;
+        }
+        if (diff < min_diff) {
+            min_diff = diff;
+            top_right_index = i;
+        }
+        if (diff > max_diff) {
+            max_diff = diff;
+            bottom_left_index = i;
+        }
+    }
+
+    ordered[0] = points[top_left_index];
+    ordered[1] = points[top_right_index];
+    ordered[2] = points[bottom_right_index];
+    ordered[3] = points[bottom_left_index];
+
+    return ordered;
+}
 
 
 /// @brief 形态学去噪
@@ -22,7 +66,7 @@ void morphologyProcess(cv::Mat& binary_frame, int kernel_size) {
 /// @param frame_BGR // 原始BGR图像
 /// @param contours // 输出轮廓点集
 /// @return 画面
-cv::Mat findContours(const cv::Mat& binary_frame ,const cv::Mat& frame_BGR,std::vector<std::vector<cv::Point>>& contours) {
+cv::Mat findContours_and_Draw(const cv::Mat& binary_frame ,const cv::Mat& frame_BGR,std::vector<std::vector<cv::Point>>& contours) {
     
     std::vector<cv::Vec4i> hierarchy;
     cv::findContours(binary_frame, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
@@ -43,7 +87,7 @@ cv::Mat findContours(const cv::Mat& binary_frame ,const cv::Mat& frame_BGR,std::
 /// @param lines // 期望的边数，默认为4(!!如果为0则挑选圆形)
 /// @param nums //挑选出的图形数量
 /// @param draw // 是否在画面上绘制最佳图形，默认为false
-/// @return 最佳多边形顶点
+/// @return 最佳多边形顶点。第一个vector是多个图形，第二个vector是每个图形的顶点坐标。如果没有找到符合条件的图形，则返回std::nullopt
 std::optional<std::vector<std::vector<cv::Point>>> selectBestContour(const std::vector<std::vector<cv::Point>>& contours, cv::Mat& frame_BGR, int lines, int nums, bool draw) {
     std::vector<double> area_vector;
     std::vector<double> rad_vector;
@@ -134,7 +178,8 @@ std::optional<std::vector<std::vector<cv::Point>>> selectBestContour(const std::
                             best_rect[i] = best_rect[i-1];
                         }
                         area_vector[j] = area;
-                        best_rect[j] = approx;
+                        if(lines == 4) best_rect[j] = orderRectanglePoints(approx);
+                        else best_rect[j] = approx;
                         break;
                     }
                 }
@@ -153,7 +198,7 @@ std::optional<std::vector<std::vector<cv::Point>>> selectBestContour(const std::
             return std::nullopt;
         }
     }
-    return std::make_optional(best_rect);
+    return std::make_optional(best_rect);//返回轮廓近似的多边形的几个点
 }   
         
 /// @brief 通过兴趣点找物体
@@ -165,15 +210,15 @@ std::optional<std::vector<std::vector<cv::Point>>> selectBestContour(const std::
 std::optional<ROI_with_oringin> find_target_object(cv::Mat& frame_BGR, cv::Mat& frame_binary, int lines, int roi_nums){
     //1、找框（兴趣点）
     std::vector<std::vector<cv::Point>> contours;
-    findContours(frame_binary, frame_BGR, contours);//寻找全图轮廓
-    std::optional<std::vector<std::vector<cv::Point>>> target_range = selectBestContour(contours, frame_BGR, 4, roi_nums, true);
-    // std::vector<cv::Rect> roi_vector;
-    std::vector<cv::Rect> box_vector;
-    // std::vector<std::vector<cv::Point>> object_data(roi_nums);
     ROI_with_oringin Position_data;
+    findContours_and_Draw(frame_binary, frame_BGR, contours);//寻找全图轮廓
+    std::optional<std::vector<std::vector<cv::Point>>> target_range = selectBestContour(contours, frame_BGR, 4, roi_nums, true);
+    std::vector<cv::Rect> box_vector;
     Position_data.object_ROI_data.reserve(roi_nums);
 
     if (!target_range.has_value()) return std::nullopt;
+    Position_data.Contours_vertex = target_range.value();
+    
     for(int i =0;i<roi_nums;i++){
         if (target_range.value()[i][0].x > 0){
             cv::Rect box = cv::boundingRect(target_range.value()[i]);
@@ -190,7 +235,7 @@ std::optional<ROI_with_oringin> find_target_object(cv::Mat& frame_BGR, cv::Mat& 
     //contour_vis 修改到兴趣点
     for(int i = 0;i<roi_nums;i++){
         contours.clear();
-        findContours(frame_binary(Position_data.roi_vector[i]), frame_BGR(Position_data.roi_vector[i]), contours);
+        findContours_and_Draw(frame_binary(Position_data.roi_vector[i]), frame_BGR(Position_data.roi_vector[i]), contours);
         cv::Mat frame_BGRROI = frame_BGR(Position_data.roi_vector[i]);
         auto data = selectBestContour(contours, frame_BGRROI, lines, 1, true);
         
@@ -201,44 +246,135 @@ std::optional<ROI_with_oringin> find_target_object(cv::Mat& frame_BGR, cv::Mat& 
             Position_data.object_ROI_data.push_back(std::vector{cv::Point(-1, -1)});
         }
     }
+
+    int target_index = -1;
+    cv::Mat frame_HSV;
+    for (int i = 0; i < Position_data.object_ROI_data.size(); i++){
+        if(Position_data.object_ROI_data[i][0] == cv::Point(-1, -1)){
+            continue;
+        }
+        target_index = i;
+        Position_data.target_index = i;
+        break;
+    }
+
+    int Point_num = lines;
+    if (target_index != -1){
+        if(lines == 0){//圆的情况，只有两个点，直接取第一个点,因为第二个点是(Radius, 0)
+            Point_num = 1;
+            Position_data.target_absolute_position.push_back(cv::Point((Position_data.object_ROI_data[Position_data.target_index][0].x ) + Position_data.roi_vector[Position_data.target_index].x, (Position_data.object_ROI_data[Position_data.target_index][0].y ) + Position_data.roi_vector[Position_data.target_index].y));
+        }
+        else{
+            for (int i =0;i<Position_data.object_ROI_data[Position_data.target_index].size();i++){ 
+                if(Position_data.object_ROI_data[Position_data.target_index][i] == cv::Point(-1, -1)){
+                    Point_num--;
+                    continue;
+                }
+                Position_data.target_absolute_position.push_back(cv::Point((Position_data.object_ROI_data[Position_data.target_index][i].x ) + Position_data.roi_vector[Position_data.target_index].x, (Position_data.object_ROI_data[Position_data.target_index][i].y ) + Position_data.roi_vector[Position_data.target_index].y));
+            }
+        }
+    }
     
     return std::make_optional(Position_data);
+
 }
 
-//三角形
-        // std::optional<ROI_with_oringin> object_data = find_target_object(contours, frame_BGR, frame_binary, 3, 2);
-        // if (object_data.has_value()){
-        //     for(int i =0;i<2;i++){
-        //         if(object_data.value().object_ROI_data[i][0] != cv::Point(-1, -1)){
-        //             for(const auto& point : object_data.value().object_ROI_data[i]){
-        //                 std::cout << "(" << point.x + object_data.value().roi_vector[i].x << ", " << point.y + object_data.value().roi_vector[i].y << ")" << std::endl;
-        //             }
-        //         }
-        //     }
-        // }
+/// @brief 将目标物体坐标映射到到画布坐标
+/// @param frame_BGR 
+/// @param frame_binary 
+/// @return 应该画在画布上的绝对坐标
+std::optional<ROI_with_oringin> find_object_positon_on_canvas(cv::Mat& frame_BGR, cv::Mat& frame_binary){
+    std::vector<cv::Point> object_Relate_to_Contours_vectors;
+    std::vector<double> object_Relate_to_Contours_cos_vector;
+    std::vector<double> object_Relate_to_Contours_sin_vector;
+    std::vector<cv::Point> object_vectors_on_canvas;
+    std::optional<ROI_with_oringin> data;
+    std::vector<int> lines = {0, 3, 4};
 
-        //矩形
-        // std::optional<ROI_with_oringin> object_data = find_target_object(contours, frame_BGR, frame_binary, 4, 2);
-        // if (object_data.has_value()){
-        //     for(int i =0;i<2;i++){
-        //         if(object_data.value().object_data[i][0] != cv::Point(-1, -1)){
-        //             for(const auto& point : object_data.value().object_data[i]){
-        //                 std::cout << "(" << point.x + object_data.value().roi_vector[i].x << ", " << point.y + object_data.value().roi_vector[i].y << ")" << std::endl;
-        //             }
-        //             std::cout << std::endl;
-        //         }
+    for (const auto& i : lines){
+        data = find_target_object(frame_BGR, frame_binary, i, 2);
+        if (data.has_value()){
+            if (data->target_index != -1){
+                break;
+            }
+        }
+    }
+
+    for (int i = 0; i < data->target_absolute_position.size(); i++){
+        if (data->target_absolute_position[i] != cv::Point(-1, -1)){
+            object_Relate_to_Contours_vectors.push_back(data->target_absolute_position[i] - data->Contours_vertex[data->target_index][0]);
+        }
+    }
+
+    double Ktc1 = 1;
+    double Ktc2 = 1;
+    double Ktc = 1;
+    int canvas_index = 0;
+    for (int i = 0; i < object_Relate_to_Contours_vectors.size(); i++){
+        if (i == data->target_index){
+            continue;
+        }
+        double weidth_target = sqrt(pow(data->Contours_vertex[data->target_index][0].x - data->Contours_vertex[data->target_index][3].x, 2) + pow(data->Contours_vertex[data->target_index][0].y - data->Contours_vertex[data->target_index][3].y, 2));
+        double weidth_object = sqrt(pow(data->Contours_vertex[i][0].x - data->Contours_vertex[i][3].x, 2) + pow(data->Contours_vertex[i][0].y - data->Contours_vertex[i][3].y, 2));
+        canvas_index = i;
+        data->canvas_index = i;
+        Ktc1 = weidth_object / weidth_target;
+
+        weidth_target = sqrt(pow(data->Contours_vertex[data->target_index][1].x - data->Contours_vertex[data->target_index][2].x, 2) + pow(data->Contours_vertex[data->target_index][1].y - data->Contours_vertex[data->target_index][2].y, 2));
+        weidth_object = sqrt(pow(data->Contours_vertex[i][1].x - data->Contours_vertex[i][2].x, 2) + pow(data->Contours_vertex[i][1].y - data->Contours_vertex[i][2].y, 2));
+        Ktc2 = weidth_object / weidth_target;
+
+        Ktc = (Ktc1 + Ktc2) / 2;
+        break;
+    }
+
+    // std::cout << "Ktc:" << Ktc << " " << "Ktc1:" << Ktc1 << " " << "Ktc2:" << Ktc2 << std::endl;
+
+    for(int i = 0;i<object_Relate_to_Contours_vectors.size();i++){
+        double length = sqrt(pow(object_Relate_to_Contours_vectors[i].x, 2) + pow(object_Relate_to_Contours_vectors[i].y, 2));
+        double cos = object_Relate_to_Contours_vectors[i].x / length;
+        double sin = object_Relate_to_Contours_vectors[i].y / length;
+        // std::cout << "length: " << length << "(" << object_Relate_to_Contours_vectors[i].x << ", " << object_Relate_to_Contours_vectors[i].y << ") cos: " << cos << " sin: " << sin << std::endl;
+        object_Relate_to_Contours_vectors[i].y = static_cast<int>(length * Ktc * Ktc * sin);
+        object_Relate_to_Contours_vectors[i].x = static_cast<int>(length * Ktc * Ktc * cos);
+    }
+
+    for (const auto& point : object_Relate_to_Contours_vectors){
+        object_vectors_on_canvas.push_back(point + data->Contours_vertex[canvas_index][0]);
+    }
+    
+    if (canvas_index != -1 && !object_vectors_on_canvas.empty()){
+        data->object_vectors_on_canvas = object_vectors_on_canvas;
+        
+
+        //======================调试=========================
+        // for(const auto& point : data->object_vectors_on_canvas){
+        //     std::cout << "(" << point.x << ", " << point.y << ") ";
+        // }
+        // std::cout << std::endl;
+        // // data->object_vectors_on_canvas[2].x = data->Contours_vertex[canvas_index][1].x;
+        // if (data->object_vectors_on_canvas.size() == 4){
+
+        //     data->object_vectors_on_canvas[0].y = std::max(data->object_vectors_on_canvas[0].y, data->object_vectors_on_canvas[3].y);
+        //     if(data->object_vectors_on_canvas[3].y != data->Contours_vertex[canvas_index][0].y){
+        //         data->object_vectors_on_canvas[3].y = data->Contours_vertex[canvas_index][0].y;
+        //     }
+            
+        //     data->object_vectors_on_canvas[0].x = std::max(data->object_vectors_on_canvas[0].x, data->object_vectors_on_canvas[1].x);
+        //     if(data->object_vectors_on_canvas[1].x != data->Contours_vertex[canvas_index][0].x){
+        //         data->object_vectors_on_canvas[1].x = data->Contours_vertex[canvas_index][0].x;
+        //     }
+
+        //     data->object_vectors_on_canvas[2].y = data->object_vectors_on_canvas[1].y;
+
+        //     data->object_vectors_on_canvas[2].x = std::min(data->object_vectors_on_canvas[3].x, data->object_vectors_on_canvas[2].x);
+        //     if(data->object_vectors_on_canvas[3].x != data->Contours_vertex[canvas_index][2].x){
+        //         data->object_vectors_on_canvas[3].x = data->Contours_vertex[canvas_index][2].x;
         //     }
         // }
-        //圆形
-        // std::optional<ROI_with_oringin> object_data = find_target_object(contours, frame_BGR, frame_binary, 0, 2);
-        // if (object_data.has_value()){
-        //     for(int i =0;i<2;i++){
-        //         if(object_data.value().object_data[i][0] != cv::Point(-1, -1)){
-                    
-        //             std::cout << "(" << object_data.value().object_data[i][0].x + object_data.value().roi_vector[i].x << ", " << object_data.value().object_data[i][0].y + object_data.value().roi_vector[i].y << ")" << std::endl;
-                    
-        //             std::cout << "Radius:" << object_data.value().object_data[i][1].x;
-        //             std::cout << std::endl;
-        //         }
-        //     }
-        // }
+        //======================调试=========================
+        return data;
+        
+    }
+    return std::nullopt;
+}

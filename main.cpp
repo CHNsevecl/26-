@@ -35,6 +35,7 @@ int main(){
         return -1;
     }
 
+    int drawed_points = 0;
     //============处理视频流============
     while (true){
         //================ 流数据处理 =================
@@ -62,7 +63,30 @@ int main(){
 
 
         //user_code_begin
-        Question1_Answer(uart, frame_BGR, frame_binary);
+        // if(Question1_Answer(uart, frame_BGR, frame_binary) == -1){
+        //     break;
+        // }
+        int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
+        if(returned_num == -1){
+            std::cout << "All points have been drawn!" << std::endl;
+            break;
+        }
+        drawed_points += returned_num;
+
+
+        
+        
+        
+        // for (const auto& point : object_vectors_on_canvas){
+        //     std::cout << "(" << point.x << ", " << point.y << ") ";
+        // }
+        // std::cout << std::endl;
+
+        // if(data->target_index != -1){
+            
+
+             
+        // }
 
         //user_code_end
 

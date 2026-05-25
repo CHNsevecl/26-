@@ -8,6 +8,7 @@
 #include <optional>
 #include <vector>
 
-void Question1_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary);
+int Question1_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary);
+int Question2_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary, int drawed_points);
 
 #endif
