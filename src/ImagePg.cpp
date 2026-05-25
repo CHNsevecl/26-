@@ -44,6 +44,48 @@ static std::vector<cv::Point> orderRectanglePoints(const std::vector<cv::Point>&
     return ordered;
 }
 
+static std::optional<std::vector<cv::Point>> mapPointsBetweenQuads(
+    const std::vector<cv::Point>& source_quad,
+    const std::vector<cv::Point>& destination_quad,
+    const std::vector<cv::Point>& source_points) {
+
+    if (source_quad.size() < 4 || destination_quad.size() < 4 || source_points.empty()) {
+        return std::nullopt;
+    }
+
+    std::vector<cv::Point2f> source_quad_f;
+    std::vector<cv::Point2f> destination_quad_f;
+    std::vector<cv::Point2f> source_points_f;
+    source_quad_f.reserve(4);
+    destination_quad_f.reserve(4);
+    source_points_f.reserve(source_points.size());
+
+    for (int i = 0; i < 4; ++i) {
+        source_quad_f.emplace_back(static_cast<float>(source_quad[i].x), static_cast<float>(source_quad[i].y));
+        destination_quad_f.emplace_back(static_cast<float>(destination_quad[i].x), static_cast<float>(destination_quad[i].y));
+    }
+
+    for (const auto& point : source_points) {
+        source_points_f.emplace_back(static_cast<float>(point.x), static_cast<float>(point.y));
+    }
+
+    cv::Mat homography = cv::getPerspectiveTransform(source_quad_f, destination_quad_f);
+    if (homography.empty()) {
+        return std::nullopt;
+    }
+
+    std::vector<cv::Point2f> destination_points_f;
+    cv::perspectiveTransform(source_points_f, destination_points_f, homography);
+
+    std::vector<cv::Point> destination_points;
+    destination_points.reserve(destination_points_f.size());
+    for (const auto& point : destination_points_f) {
+        destination_points.emplace_back(cv::Point(cvRound(point.x), cvRound(point.y)));
+    }
+
+    return destination_points;
+}
+
 
 /// @brief 形态学去噪
 /// @param binary_frame // 二值图像 
@@ -284,10 +326,6 @@ std::optional<ROI_with_oringin> find_target_object(cv::Mat& frame_BGR, cv::Mat& 
 /// @param frame_binary 
 /// @return 应该画在画布上的绝对坐标
 std::optional<ROI_with_oringin> find_object_positon_on_canvas(cv::Mat& frame_BGR, cv::Mat& frame_binary){
-    std::vector<cv::Point> object_Relate_to_Contours_vectors;
-    std::vector<double> object_Relate_to_Contours_cos_vector;
-    std::vector<double> object_Relate_to_Contours_sin_vector;
-    std::vector<cv::Point> object_vectors_on_canvas;
     std::optional<ROI_with_oringin> data;
     std::vector<int> lines = {0, 3, 4};
 
@@ -300,81 +338,81 @@ std::optional<ROI_with_oringin> find_object_positon_on_canvas(cv::Mat& frame_BGR
         }
     }
 
-    for (int i = 0; i < data->target_absolute_position.size(); i++){
-        if (data->target_absolute_position[i] != cv::Point(-1, -1)){
-            object_Relate_to_Contours_vectors.push_back(data->target_absolute_position[i] - data->Contours_vertex[data->target_index][0]);
+    if (!data.has_value()) {
+        return std::nullopt;
+    }
+
+    if (data->target_index < 0 || data->target_index >= static_cast<int>(data->Contours_vertex.size())) {
+        return std::nullopt;
+    }
+
+    if (data->Contours_vertex[data->target_index].size() < 4) {
+        return std::nullopt;
+    }
+
+    int canvas_index = -1;
+    for (int i = 0; i < static_cast<int>(data->Contours_vertex.size()); ++i) {
+        if (i != data->target_index && data->Contours_vertex[i].size() >= 4) {
+            canvas_index = i;
+            break;
         }
     }
 
-    double Ktc1 = 1;
-    double Ktc2 = 1;
-    double Ktc = 1;
-    int canvas_index = 0;
-    for (int i = 0; i < object_Relate_to_Contours_vectors.size(); i++){
-        if (i == data->target_index){
-            continue;
+    if (canvas_index == -1) {
+        return std::nullopt;
+    }
+
+    data->canvas_index = canvas_index;
+
+    std::vector<cv::Point> source_points;
+    source_points.reserve(data->target_absolute_position.size());
+    for (const auto& point : data->target_absolute_position) {
+        if (point != cv::Point(-1, -1)) {
+            source_points.push_back(point);
         }
-        double weidth_target = sqrt(pow(data->Contours_vertex[data->target_index][0].x - data->Contours_vertex[data->target_index][3].x, 2) + pow(data->Contours_vertex[data->target_index][0].y - data->Contours_vertex[data->target_index][3].y, 2));
-        double weidth_object = sqrt(pow(data->Contours_vertex[i][0].x - data->Contours_vertex[i][3].x, 2) + pow(data->Contours_vertex[i][0].y - data->Contours_vertex[i][3].y, 2));
-        canvas_index = i;
-        data->canvas_index = i;
-        Ktc1 = weidth_object / weidth_target;
-
-        weidth_target = sqrt(pow(data->Contours_vertex[data->target_index][1].x - data->Contours_vertex[data->target_index][2].x, 2) + pow(data->Contours_vertex[data->target_index][1].y - data->Contours_vertex[data->target_index][2].y, 2));
-        weidth_object = sqrt(pow(data->Contours_vertex[i][1].x - data->Contours_vertex[i][2].x, 2) + pow(data->Contours_vertex[i][1].y - data->Contours_vertex[i][2].y, 2));
-        Ktc2 = weidth_object / weidth_target;
-
-        Ktc = (Ktc1 + Ktc2) / 2;
-        break;
     }
 
-    // std::cout << "Ktc:" << Ktc << " " << "Ktc1:" << Ktc1 << " " << "Ktc2:" << Ktc2 << std::endl;
+    auto mapped_points = mapPointsBetweenQuads(
+        data->Contours_vertex[data->target_index],
+        data->Contours_vertex[canvas_index],
+        source_points);
 
-    for(int i = 0;i<object_Relate_to_Contours_vectors.size();i++){
-        double length = sqrt(pow(object_Relate_to_Contours_vectors[i].x, 2) + pow(object_Relate_to_Contours_vectors[i].y, 2));
-        double cos = object_Relate_to_Contours_vectors[i].x / length;
-        double sin = object_Relate_to_Contours_vectors[i].y / length;
-        // std::cout << "length: " << length << "(" << object_Relate_to_Contours_vectors[i].x << ", " << object_Relate_to_Contours_vectors[i].y << ") cos: " << cos << " sin: " << sin << std::endl;
-        object_Relate_to_Contours_vectors[i].y = static_cast<int>(length * Ktc * Ktc * sin);
-        object_Relate_to_Contours_vectors[i].x = static_cast<int>(length * Ktc * Ktc * cos);
+    if (!mapped_points.has_value() || mapped_points->empty()) {
+        return std::nullopt;
     }
 
-    for (const auto& point : object_Relate_to_Contours_vectors){
-        object_vectors_on_canvas.push_back(point + data->Contours_vertex[canvas_index][0]);
+    data->object_vectors_on_canvas = mapped_points.value();
+
+    for (const auto& point : data->object_vectors_on_canvas){
+        std::cout << "Canvas Point: (" << point.x << ", " << point.y << ")";
     }
-    
-    if (canvas_index != -1 && !object_vectors_on_canvas.empty()){
-        data->object_vectors_on_canvas = object_vectors_on_canvas;
-        
+    std::cout << std::endl;
 
-        //======================调试=========================
-        // for(const auto& point : data->object_vectors_on_canvas){
-        //     std::cout << "(" << point.x << ", " << point.y << ") ";
-        // }
-        // std::cout << std::endl;
-        // // data->object_vectors_on_canvas[2].x = data->Contours_vertex[canvas_index][1].x;
-        // if (data->object_vectors_on_canvas.size() == 4){
+    return data;
+}
 
-        //     data->object_vectors_on_canvas[0].y = std::max(data->object_vectors_on_canvas[0].y, data->object_vectors_on_canvas[3].y);
-        //     if(data->object_vectors_on_canvas[3].y != data->Contours_vertex[canvas_index][0].y){
-        //         data->object_vectors_on_canvas[3].y = data->Contours_vertex[canvas_index][0].y;
-        //     }
-            
-        //     data->object_vectors_on_canvas[0].x = std::max(data->object_vectors_on_canvas[0].x, data->object_vectors_on_canvas[1].x);
-        //     if(data->object_vectors_on_canvas[1].x != data->Contours_vertex[canvas_index][0].x){
-        //         data->object_vectors_on_canvas[1].x = data->Contours_vertex[canvas_index][0].x;
-        //     }
+void Distance_to_line_translator(ROI_with_oringin& data, std::vector<cv::Point>& object_Relate_to_Contours_vectors, std::vector<cv::Point>& object_vectors_on_canvas, int& contours_index) {
+    object_vectors_on_canvas.clear();
 
-        //     data->object_vectors_on_canvas[2].y = data->object_vectors_on_canvas[1].y;
-
-        //     data->object_vectors_on_canvas[2].x = std::min(data->object_vectors_on_canvas[3].x, data->object_vectors_on_canvas[2].x);
-        //     if(data->object_vectors_on_canvas[3].x != data->Contours_vertex[canvas_index][2].x){
-        //         data->object_vectors_on_canvas[3].x = data->Contours_vertex[canvas_index][2].x;
-        //     }
-        // }
-        //======================调试=========================
-        return data;
-        
+    if (data.target_index < 0 || data.target_index >= static_cast<int>(data.Contours_vertex.size())) {
+        return;
     }
-    return std::nullopt;
+    if (contours_index < 0 || contours_index >= static_cast<int>(data.Contours_vertex.size())) {
+        return;
+    }
+    if (data.Contours_vertex[data.target_index].size() < 4 || data.Contours_vertex[contours_index].size() < 4) {
+        return;
+    }
+
+    auto mapped_points = mapPointsBetweenQuads(
+        data.Contours_vertex[data.target_index],
+        data.Contours_vertex[contours_index],
+        object_Relate_to_Contours_vectors);
+
+    if (!mapped_points.has_value()) {
+        return;
+    }
+
+    object_vectors_on_canvas = mapped_points.value();
+    data.canvas_index = contours_index;
 }

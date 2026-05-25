@@ -71,7 +71,11 @@ int main(){
             std::cout << "All points have been drawn!" << std::endl;
             break;
         }
+        else if(returned_num == 1){
+            sleep(0.1);
+        }
         drawed_points += returned_num;
+
 
 
         

@@ -25,4 +25,11 @@ struct ROI_with_oringin{
     int canvas_index = -1;
 };
 
+struct Math_proccessing_data{
+    double target_distance_to_upper_line;
+    double tan_target_contour;
+    double sin_target_contour;
+    double cos_target_contour;
+};
+
 #endif
