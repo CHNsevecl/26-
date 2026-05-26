@@ -1,13 +1,37 @@
 #include "ImagePg.hpp"
 
-namespace {
+#include <algorithm>
+#include <cmath>
 
 bool isCircleDescriptor(const std::vector<cv::Point>& points) {
     return points.size() == 2 && points[1].y == 0;
 }
 
+std::vector<cv::Point> buildCirclePath(const std::vector<cv::Point>& mapped_points, int sample_count) {
+    std::vector<cv::Point> circle_points;
+    if (mapped_points.size() < 2) {
+        return circle_points;
+    }
+
+    const cv::Point circle_center = mapped_points[0];
+    const double circle_radius = cv::norm(mapped_points[0] - mapped_points[1]);
+    if (circle_radius <= 0.0) {
+        return circle_points;
+    }
+
+    sample_count = static_cast<int>(std::ceil((2.0 * CV_PI * circle_radius) / 6.0));
+    sample_count = std::max(72, std::min(sample_count, 360));
+
+    circle_points.reserve(sample_count);
+    for (int i = 0; i < sample_count; ++i) {
+        const double theta = 2.0 * CV_PI * static_cast<double>(i) / static_cast<double>(sample_count);
+        circle_points.emplace_back(
+            static_cast<int>(std::round(circle_center.x + circle_radius * std::cos(theta))),
+            static_cast<int>(std::round(circle_center.y + circle_radius * std::sin(theta))));
+    }
+
+    return circle_points;
 }
-#include <algorithm>
 
 static std::vector<cv::Point> orderRectanglePoints(const std::vector<cv::Point>& points) {
     std::vector<cv::Point> ordered(4);
