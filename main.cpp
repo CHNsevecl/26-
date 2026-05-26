@@ -15,7 +15,7 @@ int main(){
     std::string pipeline = 
     {
         "libcamerasrc camera-name=/base/axi/pcie@1000120000/rp1/i2c@88000/imx708@1a ! "
-        "video/x-raw,format=NV12,width=640,height=480,framerate=15/1 ! "
+        "video/x-raw,format=NV12,width=1680,height=640,framerate=15/1 ! "
         "videoconvert ! video/x-raw,format=BGR ! "
         "appsink drop=true max-buffers=1 sync=false"
     };
@@ -51,7 +51,7 @@ int main(){
             break;
         }
         cv::cvtColor(frame_BGR, frame_gray, cv::COLOR_BGR2GRAY);
-        cv::threshold(frame_gray, frame_binary, 90, 255, cv::THRESH_BINARY_INV);
+        cv::threshold(frame_gray, frame_binary, 60, 255, cv::THRESH_BINARY_INV);
 
         //===============形态学去噪=======================
         morphologyProcess(frame_binary, 3);
@@ -65,9 +65,9 @@ int main(){
         //user_code_begin
         
         //Q3
-        if(Question3_Answer(uart, frame_BGR, frame_binary) == -1){
-            break;
-        }
+        // if(Question3_Answer(uart, frame_BGR, frame_binary) == -1){
+        //     break;
+        // }
         //user_code_end
 
 
@@ -77,15 +77,15 @@ int main(){
         // }
 
         // Q2
-        // int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
-        // if(returned_num == -1){
-        //     std::cout << "All points have been drawn!" << std::endl;
-        //     break;
-        // }
-        // else if(returned_num == 1){
-        //     sleep(0.1);
-        // }
-        // drawed_points += returned_num;
+        int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
+        if(returned_num == -1){
+            std::cout << "All points have been drawn!" << std::endl;
+            break;
+        }
+        else if(returned_num == 1){
+            sleep(0.1);
+        }
+        drawed_points += returned_num;
 
 
 

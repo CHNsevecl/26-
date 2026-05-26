@@ -7,7 +7,7 @@ bool isCircleDescriptor(const std::vector<cv::Point>& points) {
     return points.size() == 2 && points[1].y == 0;
 }
 
-std::vector<cv::Point> buildCirclePath(const std::vector<cv::Point>& mapped_points, int sample_count) {
+std::vector<cv::Point> buildCirclePath(const std::vector<cv::Point>& mapped_points, int sample_count, double per_pixel_length) {
     std::vector<cv::Point> circle_points;
     if (mapped_points.size() < 2) {
         return circle_points;
@@ -19,8 +19,8 @@ std::vector<cv::Point> buildCirclePath(const std::vector<cv::Point>& mapped_poin
         return circle_points;
     }
 
-    sample_count = static_cast<int>(std::ceil((2.0 * CV_PI * circle_radius) / 6.0));
-    sample_count = std::max(72, std::min(sample_count, 360));
+    sample_count = static_cast<int>(std::ceil((2.0 * CV_PI * circle_radius) / per_pixel_length));
+    sample_count = std::max(36, std::min(sample_count, 360));
 
     circle_points.reserve(sample_count);
     for (int i = 0; i < sample_count; ++i) {

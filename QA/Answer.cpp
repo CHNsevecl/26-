@@ -48,7 +48,7 @@ int Question2_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary, int 
 
     const bool circle_mode = isCircleDescriptor(data->target_absolute_position);
     std::vector<cv::Point> target_points = circle_mode
-        ? buildCirclePath(data->object_vectors_on_canvas)
+        ? buildCirclePath(data->object_vectors_on_canvas, 36, 15.0)
         : data->object_vectors_on_canvas;
 
     if (target_points.empty()) {
