@@ -276,6 +276,11 @@ std::optional<ROI_with_oringin> find_target_object(cv::Mat& frame_BGR, cv::Mat& 
     //2、找物体
     //contour_vis 修改到兴趣点
     for(int i = 0;i<roi_nums;i++){
+        if (Position_data.roi_vector[i].width <= 0 || Position_data.roi_vector[i].height <= 0) {
+            Position_data.object_ROI_data.push_back(std::vector{cv::Point(-1, -1)});
+            continue;
+        }
+
         contours.clear();
         findContours_and_Draw(frame_binary(Position_data.roi_vector[i]), frame_BGR(Position_data.roi_vector[i]), contours);
         cv::Mat frame_BGRROI = frame_BGR(Position_data.roi_vector[i]);
@@ -350,6 +355,10 @@ std::optional<ROI_with_oringin> find_object_positon_on_canvas(cv::Mat& frame_BGR
         return std::nullopt;
     }
 
+    if (data->target_absolute_position.empty()) {
+        return std::nullopt;
+    }
+
     int canvas_index = -1;
     for (int i = 0; i < static_cast<int>(data->Contours_vertex.size()); ++i) {
         if (i != data->target_index && data->Contours_vertex[i].size() >= 4) {
@@ -383,11 +392,6 @@ std::optional<ROI_with_oringin> find_object_positon_on_canvas(cv::Mat& frame_BGR
 
     data->object_vectors_on_canvas = mapped_points.value();
 
-    for (const auto& point : data->object_vectors_on_canvas){
-        std::cout << "Canvas Point: (" << point.x << ", " << point.y << ")";
-    }
-    std::cout << std::endl;
-
     return data;
 }
 
@@ -401,6 +405,9 @@ void Distance_to_line_translator(ROI_with_oringin& data, std::vector<cv::Point>&
         return;
     }
     if (data.Contours_vertex[data.target_index].size() < 4 || data.Contours_vertex[contours_index].size() < 4) {
+        return;
+    }
+    if (object_Relate_to_Contours_vectors.empty()) {
         return;
     }
 

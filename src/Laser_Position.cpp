@@ -15,7 +15,7 @@ std::optional<cv::Point> delta_Position(std::optional<ROI_with_oringin>& Positio
     
     cv::cvtColor(frame_BGR, frame_HSV, cv::COLOR_BGR2HSV);
     cv::Mat mask_blue;
-    cv::inRange(frame_HSV, cv::Scalar(100, 30, 150), cv::Scalar(130, 255, 255), mask_blue);
+    cv::inRange(frame_HSV, cv::Scalar(100, 30, 120), cv::Scalar(130, 255, 255), mask_blue);
     cv::Mat kernel_blue = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3));
     // 只填充微小空洞，不去主动腐蚀
     cv::morphologyEx(mask_blue, mask_blue, cv::MORPH_CLOSE, kernel_blue);
@@ -54,6 +54,13 @@ std::optional<cv::Point> delta_Position(std::optional<ROI_with_oringin>& Positio
 
 cv::Point find_target_center_on_all_frame(ROI_with_oringin& object_data){
     cv::Point target_center_on_all_frame;
+    if (object_data.target_index < 0 || object_data.target_index >= static_cast<int>(object_data.object_ROI_data.size())) {
+        return target_center_on_all_frame;
+    }
+    if (object_data.target_absolute_position.empty()) {
+        return target_center_on_all_frame;
+    }
+
     int Point_num = object_data.object_ROI_data[object_data.target_index].size();
     // std::cout << Point_num << std::endl;
     if(Point_num == 2){//圆的情况，只有两个点，直接取第一个点,因为第二个点是(Radius, 0)

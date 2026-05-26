@@ -63,9 +63,27 @@ int main(){
 
 
         //user_code_begin
+        
+        // int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
+        // if(returned_num == -1){
+        //     std::cout << "All points have been drawn!" << std::endl;
+        //     break;
+        // }
+        // else if(returned_num == 1){
+        //     sleep(0.1);
+        // }
+        // drawed_points += returned_num;
+
+
+        //user_code_end
+
+
+        // Q1
         // if(Question1_Answer(uart, frame_BGR, frame_binary) == -1){
         //     break;
         // }
+
+        // Q2
         int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
         if(returned_num == -1){
             std::cout << "All points have been drawn!" << std::endl;
@@ -75,25 +93,6 @@ int main(){
             sleep(0.1);
         }
         drawed_points += returned_num;
-
-
-
-        
-        
-        
-        // for (const auto& point : object_vectors_on_canvas){
-        //     std::cout << "(" << point.x << ", " << point.y << ") ";
-        // }
-        // std::cout << std::endl;
-
-        // if(data->target_index != -1){
-            
-
-             
-        // }
-
-        //user_code_end
-
 
 
 

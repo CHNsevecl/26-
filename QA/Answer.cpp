@@ -23,6 +23,9 @@ int Question1_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary){
             continue;
             
         }
+        if (data->target_absolute_position.empty()) {
+            continue;
+        }
         cv::Point target_center_on_all_frame = find_target_center_on_all_frame(data.value());
         delta_pos = delta_Position(data, frame_BGR, target_center_on_all_frame);
         if (delta_pos.has_value()){
@@ -46,14 +49,7 @@ int Question2_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary, int 
     if(!data.has_value()){
         return 0 ;
     }
-    // std::cout << "Object position on canvas: ";
-    // for(const auto& point : data->object_vectors_on_canvas){
-    //     std::cout << "(" << point.x << ", " << point.y << ") ";
-    // }
-    // std::cout << std::endl;
 
-
-    // for (int i = 0; i < data->object_vectors_on_canvas.size(); i++){
         std::cout << "Drawed points: " << drawed_points << std::endl;
         if(drawed_points == data->object_vectors_on_canvas.size()){
             drawed_points = 0;
@@ -64,11 +60,6 @@ int Question2_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary, int 
         }
         cv::Point target_center_on_all_frame = data->object_vectors_on_canvas[drawed_points];
         std::optional<cv::Point> delta_pos = delta_Position(data, frame_BGR, target_center_on_all_frame);
-        // for(const auto& point : data->Contours_vertex[data->canvas_index]){
-        //     std::cout << "Canvas Contour Point: (" << point.x << ", " << point.y << ")" ;
-        // }
-        // std::cout << std::endl;
-
 
         std::vector<std::string> message = uart.receive();
 
@@ -93,7 +84,6 @@ int Question2_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary, int 
                 
             }
             else{
-                std::cout << "Delta Position: (" << delta_pos->x << ", " << delta_pos->y << ")" << std::endl;
                 if(abs(delta_pos->x) < 3 && abs(delta_pos->y) < 3){
                     send_direction_to_MCU(uart, delta_pos.value(), 0, "RP5", "END");
                 }
@@ -105,10 +95,7 @@ int Question2_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary, int 
 
                     send_direction_to_MCU(uart, D_delta_pos, 2, "RP5", "END");
                 }
-                
             }
         }
-    
-    // }
     return 0;
 }
