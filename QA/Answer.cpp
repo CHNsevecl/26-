@@ -114,45 +114,50 @@ int Question2_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary, int 
                 }
             }
         }
+        
+        if(!data.has_value()){
+        return 0;
+        }
+        for(const auto& point : data->Contours_vertex[data->target_index]){
+            cv::circle(frame_BGR, point, 5, cv::Scalar(0, 255, 0), -1);
+        }
     return 0;
 }
 
-int Question3_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary){
-    std::vector<int> lines = {0, 3, 4};
-    std::optional<cv::Point> delta_pos;
+int Question3_Answer(UART& uart, std::optional<ROI_with_oringin>& data0, cv::Mat& frame_BGR, cv::Mat& frame_binary){
 
-    std::vector<std::string> message = uart.receive();
-    // if(message.size() >= 4){
-    //     if (message[0] == "PICO2" && message[1] == "0" && message[2] == "0" && message[3] == "END"){
-    //         return 0;
-    //     }
-    // }
-    
-    for (const auto& i : lines){
+    if(data0->count_for_q3 < 50){
         std::optional<ROI_with_oringin> data = find_object_positon_on_canvas(frame_BGR, frame_binary);
         if(!data.has_value()){
-            continue;
+            return 0 ;
+        }
+        if(data->target_index != -1){
+            data->count_for_q3 = data0->count_for_q3;
+            data0 = data;
+            for(auto& point : data->Contours_vertex[data->target_index]){
+                cv::circle(frame_BGR, point, 5, cv::Scalar(0, 255, 0), -1);
+            }
+
+            data0->count_for_q3 = data0->count_for_q3 + 1;
             
         }
-        if (data->target_absolute_position.empty()) {
-            continue;
-        }
-
-        cv::Point target_center_on_all_frame ;
-        for(const auto& point : data->object_vectors_on_canvas){
-            target_center_on_all_frame.x += point.x;
-            target_center_on_all_frame.y += point.y;
-        }
-        target_center_on_all_frame.x /= static_cast<int>(data->object_vectors_on_canvas.size());
-        target_center_on_all_frame.y /= static_cast<int>(data->object_vectors_on_canvas.size());
+    }
+    else{
         
-        delta_pos = delta_Position(data, frame_BGR, target_center_on_all_frame);
-            if (delta_pos.has_value()){
-                break;
-            }
+        find_target_object(frame_BGR, frame_binary, 4, 1);
+        std::vector<std::vector<cv::Point>> contours;
+        findContours_and_Draw(frame_binary, frame_BGR, contours);
+        std::optional<std::vector<std::vector<cv::Point>>> target_range = selectBestContour(contours, frame_BGR, 4, 1, true);
+
+        if(target_range.has_value()){
+            target_range.value()[0] = orderRectanglePoints(target_range.value()[0]);
+            data0->Contours_vertex[data0->canvas_index] = target_range.value()[0];
         }
-        if (delta_pos.has_value()){
-            send_direction_to_MCU(uart, delta_pos.value(), 3, "RP5", "END");
-        }
+    }
+
+    
+
+    
+        
     return 0;
 }

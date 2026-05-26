@@ -15,7 +15,7 @@ int main(){
     std::string pipeline = 
     {
         "libcamerasrc camera-name=/base/axi/pcie@1000120000/rp1/i2c@88000/imx708@1a ! "
-        "video/x-raw,format=NV12,width=1680,height=640,framerate=15/1 ! "
+        "video/x-raw,format=NV12,width=1850,height=820,framerate=15/1 ! "
         "videoconvert ! video/x-raw,format=BGR ! "
         "appsink drop=true max-buffers=1 sync=false"
     };
@@ -36,6 +36,8 @@ int main(){
     }
 
     int drawed_points = 0;
+    // std::optional<ROI_with_oringin> data;
+    ROI_with_oringin data;
     //============处理视频流============
     while (true){
         //================ 流数据处理 =================
@@ -65,34 +67,40 @@ int main(){
         //user_code_begin
         
         //Q3
-        // if(Question3_Answer(uart, frame_BGR, frame_binary) == -1){
+        // if(Question3_Answer(uart, data, frame_BGR, frame_binary) == -1){
         //     break;
         // }
-        //user_code_end
+        // user_code_end
 
 
         // Q1
-        // if(Question1_Answer(uart, frame_BGR, frame_binary) == -1){
-        //     break;
-        // }
-
-        // Q2
-        int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
-        if(returned_num == -1){
-            std::cout << "All points have been drawn!" << std::endl;
+        if(Question1_Answer(uart, frame_BGR, frame_binary) == -1){
             break;
         }
-        else if(returned_num == 1){
-            sleep(0.1);
-        }
-        drawed_points += returned_num;
 
+        // Q2
+        // int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
+        // if(returned_num == -1){
+        //     std::cout << "All points have been drawn!" << std::endl;
+        //     break;
+        // }
+        // else if(returned_num == 1){
+        //     sleep(0.1);
+        // }
+        // drawed_points += returned_num;
 
+        // if(data.roi_vector.size() > 0) {
+        //     cv::Mat frame_BGR_copy = frame_BGR.clone();
+        //     frame_BGR_copy = frame_BGR_copy(data.roi_vector[0]);
+        //     cv::imshow("Frame", frame_BGR_copy);
+        // }
 
+        // cv::imshow("Frame", frame_BGR.roi(data.roi_vector[0]));
+        // cv::imshow("Frame", frame_binary);
         cv::imshow("Line",frame_BGR);
         if (cv::waitKey(1) == 27){
             break;
-            }
+        }
     }
 
     

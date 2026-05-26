@@ -21,8 +21,11 @@ struct ROI_with_oringin{
     std::vector<std::vector<cv::Point>> Contours_vertex;
     std::vector<cv::Point> target_absolute_position;
     std::vector<cv::Point> object_vectors_on_canvas;
+
     int target_index = -1;
     int canvas_index = -1;
+    int count_for_q3 = 0;
+
 };
 
 struct Math_proccessing_data{

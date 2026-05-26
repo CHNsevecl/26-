@@ -33,7 +33,7 @@ std::vector<cv::Point> buildCirclePath(const std::vector<cv::Point>& mapped_poin
     return circle_points;
 }
 
-static std::vector<cv::Point> orderRectanglePoints(const std::vector<cv::Point>& points) {
+std::vector<cv::Point> orderRectanglePoints(const std::vector<cv::Point>& points) {
     std::vector<cv::Point> ordered(4);
 
     int top_left_index = 0;
@@ -118,18 +118,61 @@ static std::optional<std::vector<cv::Point>> mapPointsBetweenQuads(
     return destination_points;
 }
 
+static std::optional<std::vector<cv::Point>> buildMappedTargetPoints(const ROI_with_oringin& data) {
+    if (data.target_index < 0 || data.target_index >= static_cast<int>(data.Contours_vertex.size())) {
+        return std::nullopt;
+    }
+    if (data.canvas_index < 0 || data.canvas_index >= static_cast<int>(data.Contours_vertex.size())) {
+        return std::nullopt;
+    }
+    if (data.Contours_vertex[data.target_index].size() < 4 || data.Contours_vertex[data.canvas_index].size() < 4) {
+        return std::nullopt;
+    }
+    if (data.target_absolute_position.empty()) {
+        return std::nullopt;
+    }
+
+    std::vector<cv::Point> source_points;
+    if (isCircleDescriptor(data.target_absolute_position)) {
+        const cv::Point& center = data.target_absolute_position[0];
+        const cv::Point& radius_point = data.target_absolute_position[1];
+        if (center != cv::Point(-1, -1) && radius_point.x >= 0) {
+            source_points.push_back(center);
+            source_points.push_back(cv::Point(center.x + radius_point.x, center.y));
+        }
+    }
+    else {
+        source_points.reserve(data.target_absolute_position.size());
+        for (const auto& point : data.target_absolute_position) {
+            if (point != cv::Point(-1, -1)) {
+                source_points.push_back(point);
+            }
+        }
+    }
+
+    if (source_points.empty()) {
+        return std::nullopt;
+    }
+
+    return mapPointsBetweenQuads(
+        data.Contours_vertex[data.target_index],
+        data.Contours_vertex[data.canvas_index],
+        source_points);
+}
+
 
 /// @brief 形态学去噪
 /// @param binary_frame // 二值图像 
 /// @param kernel_size // 形态学核大小，默认为2
 void morphologyProcess(cv::Mat& binary_frame, int kernel_size) {
     cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(kernel_size, kernel_size));
+    cv::Mat kernel2 = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(10, 10));
     
     cv::erode(binary_frame, binary_frame, kernel);
     cv::dilate(binary_frame, binary_frame, kernel);
 
     // 先闭运算：补小黑洞、连断裂边缘
-    cv::morphologyEx(binary_frame, binary_frame, cv::MORPH_CLOSE, kernel);
+    cv::morphologyEx(binary_frame, binary_frame, cv::MORPH_CLOSE, kernel2);
 
     // 再开运算：去掉零散小噪声
     cv::morphologyEx(binary_frame, binary_frame, cv::MORPH_OPEN, kernel);
@@ -163,6 +206,10 @@ cv::Mat findContours_and_Draw(const cv::Mat& binary_frame ,const cv::Mat& frame_
 /// @param draw // 是否在画面上绘制最佳图形，默认为false
 /// @return 最佳多边形顶点。第一个vector是多个图形，第二个vector是每个图形的顶点坐标。如果没有找到符合条件的图形，则返回std::nullopt
 std::optional<std::vector<std::vector<cv::Point>>> selectBestContour(const std::vector<std::vector<cv::Point>>& contours, cv::Mat& frame_BGR, int lines, int nums, bool draw) {
+    if (nums <= 0) {
+        return std::nullopt;
+    }
+
     std::vector<double> area_vector;
     std::vector<double> rad_vector;
     std::vector<std::vector<cv::Point>> best_rect;
@@ -297,7 +344,7 @@ std::optional<ROI_with_oringin> find_target_object(cv::Mat& frame_BGR, cv::Mat& 
         if (target_range.value()[i][0].x > 0){
             cv::Rect box = cv::boundingRect(target_range.value()[i]);
             box_vector.push_back(box);
-            cv::Rect roi = cv::Rect(std::min(frame_BGR.cols - 1, box.x+10), std::min(frame_BGR.rows - 1, box.y+10), std::max(0, box.width-20), std::max(0, box.height-25));
+            cv::Rect roi = cv::Rect(std::min(frame_BGR.cols - 1, box.x+10), std::min(frame_BGR.rows - 1, box.y+10), std::max(0, box.width-10), std::max(0, box.height-10));
             Position_data.roi_vector.push_back(roi);
         }
         else{
@@ -385,18 +432,6 @@ std::optional<ROI_with_oringin> find_object_positon_on_canvas(cv::Mat& frame_BGR
         return std::nullopt;
     }
 
-    if (data->target_index < 0 || data->target_index >= static_cast<int>(data->Contours_vertex.size())) {
-        return std::nullopt;
-    }
-
-    if (data->Contours_vertex[data->target_index].size() < 4) {
-        return std::nullopt;
-    }
-
-    if (data->target_absolute_position.empty()) {
-        return std::nullopt;
-    }
-
     int canvas_index = -1;
     for (int i = 0; i < static_cast<int>(data->Contours_vertex.size()); ++i) {
         if (i != data->target_index && data->Contours_vertex[i].size() >= 4) {
@@ -411,28 +446,7 @@ std::optional<ROI_with_oringin> find_object_positon_on_canvas(cv::Mat& frame_BGR
 
     data->canvas_index = canvas_index;
 
-    std::vector<cv::Point> source_points;
-    if (isCircleDescriptor(data->target_absolute_position)) {
-        const cv::Point& center = data->target_absolute_position[0];
-        const cv::Point& radius_point = data->target_absolute_position[1];
-        if (center != cv::Point(-1, -1) && radius_point.x >= 0) {
-            source_points.push_back(center);
-            source_points.push_back(cv::Point(center.x + radius_point.x, center.y));
-        }
-    }
-    else {
-        source_points.reserve(data->target_absolute_position.size());
-        for (const auto& point : data->target_absolute_position) {
-            if (point != cv::Point(-1, -1)) {
-                source_points.push_back(point);
-            }
-        }
-    }
-
-    auto mapped_points = mapPointsBetweenQuads(
-        data->Contours_vertex[data->target_index],
-        data->Contours_vertex[canvas_index],
-        source_points);
+    auto mapped_points = buildMappedTargetPoints(*data);
 
     if (!mapped_points.has_value() || mapped_points->empty()) {
         return std::nullopt;
