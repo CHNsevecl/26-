@@ -163,28 +163,25 @@ int Question3_Answer(UART& uart, std::optional<ROI_with_oringin>& data0, cv::Mat
                 for(auto& point : data0->object_vectors_on_canvas){
                     cv::circle(frame_BGR, point, 5, cv::Scalar(0, 255, 0), -1);
                 }
-                cv::circle(frame_BGR, data0->object_vectors_on_canvas[0], 5, cv::Scalar(0, 0, 255), -1);
+                
                 // cv::circle(frame_BGR, data0->object_vectors_on_canvas[1], 5, cv::Scalar(0, 255, 0), -1);
                 if (data0->object_vectors_on_canvas.size() == 2) {
                     std::optional<cv::Point> delta_pos = delta_Position(data0, frame_BGR, data0->object_vectors_on_canvas[0]);
                     if (delta_pos.has_value()) {
-                        int bias = data0->dx;
-                        cv::Point corrected = delta_pos.value();
-                        if (bias != 0) {
-                            if (delta_pos->x >= 0) corrected += cv::Point(bias, 0);
-                            else corrected -= cv::Point(bias, 0);
-                        }
-
-                        // 先发送包含偏置的主移动，再发送不带偏置的精调
-                        send_direction_to_MCU(uart, corrected, 3, "RP5", "END");
-                        send_direction_to_MCU(uart, delta_pos.value(), 3, "RP5", "END");
-
-                        // 偏置衰减：按 10% 衰减，最小步长为 1
-                        if (bias != 0) {
-                            int sign = (bias > 0) ? 1 : -1;
-                            int decay = std::max(1, std::abs(bias) / 10);
-                            data0->dx = bias - sign * decay;
-                        }
+                        send_direction_to_MCU(uart, delta_pos.value(), 3,"RP5", "END");
+                    }
+                }
+                else {
+                    cv::Point center = cv::Point(0, 0);
+                    for(const auto& point : data0->object_vectors_on_canvas){
+                        center += point;   
+                    }
+                    center.x /= data0->object_vectors_on_canvas.size();
+                    center.y /= data0->object_vectors_on_canvas.size();
+                    std::optional<cv::Point> delta_pos = delta_Position(data0, frame_BGR, center);
+                    // cv::circle(frame_BGR, center, 5, cv::Scalar(0, 0, 255), -1);
+                    if(delta_pos.has_value()){
+                        send_direction_to_MCU(uart, delta_pos.value(), 3,"RP5", "END");
                     }
                 }
 

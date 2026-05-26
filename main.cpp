@@ -15,7 +15,7 @@ int main(){
     std::string pipeline = 
     {
         "libcamerasrc camera-name=/base/axi/pcie@1000120000/rp1/i2c@88000/imx708@1a ! "
-        "video/x-raw,format=NV12,width=1750,height=640,framerate=10/1 ! "
+        "video/x-raw,format=NV12,width=1750,height=640,framerate=20/1 ! "
         "videoconvert ! video/x-raw,format=BGR ! "
         "appsink drop=true max-buffers=1 sync=false"
     };
