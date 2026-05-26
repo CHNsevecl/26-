@@ -64,6 +64,19 @@ int main(){
 
         //user_code_begin
         
+        //Q3
+        if(Question3_Answer(uart, frame_BGR, frame_binary) == -1){
+            break;
+        }
+        //user_code_end
+
+
+        // Q1
+        // if(Question1_Answer(uart, frame_BGR, frame_binary) == -1){
+        //     break;
+        // }
+
+        // Q2
         // int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
         // if(returned_num == -1){
         //     std::cout << "All points have been drawn!" << std::endl;
@@ -75,34 +88,14 @@ int main(){
         // drawed_points += returned_num;
 
 
-        //user_code_end
-
-
-        // Q1
-        // if(Question1_Answer(uart, frame_BGR, frame_binary) == -1){
-        //     break;
-        // }
-
-        // Q2
-        int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
-        if(returned_num == -1){
-            std::cout << "All points have been drawn!" << std::endl;
-            break;
-        }
-        else if(returned_num == 1){
-            sleep(0.1);
-        }
-        drawed_points += returned_num;
-
-
 
         cv::imshow("Line",frame_BGR);
         if (cv::waitKey(1) == 27){
             break;
-        }
+            }
     }
 
-
+    
     uart.close_port();
     return 0;
 }

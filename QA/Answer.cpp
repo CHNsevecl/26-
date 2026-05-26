@@ -16,12 +16,6 @@ int Question1_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary){
     for (const auto& i : lines){
         std::optional<ROI_with_oringin> data = find_target_object(frame_BGR, frame_binary, i, 2);
         if(!data.has_value()){
-            // if (data->target_index != -1){
-            //     for(const auto& point : data->Contours_vertex[data->target_index]){
-            //         std::cout << "(" << point.x << ", " << point.y << ") ";
-            //     }
-            //     std::cout << std::endl;
-            // }
             continue;
             
         }
@@ -119,6 +113,46 @@ int Question2_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary, int 
                     send_direction_to_MCU(uart, D_delta_pos, 2, "RP5", "END");
                 }
             }
+        }
+    return 0;
+}
+
+int Question3_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary){
+    std::vector<int> lines = {0, 3, 4};
+    std::optional<cv::Point> delta_pos;
+
+    std::vector<std::string> message = uart.receive();
+    // if(message.size() >= 4){
+    //     if (message[0] == "PICO2" && message[1] == "0" && message[2] == "0" && message[3] == "END"){
+    //         return 0;
+    //     }
+    // }
+    
+    for (const auto& i : lines){
+        std::optional<ROI_with_oringin> data = find_object_positon_on_canvas(frame_BGR, frame_binary);
+        if(!data.has_value()){
+            continue;
+            
+        }
+        if (data->target_absolute_position.empty()) {
+            continue;
+        }
+
+        cv::Point target_center_on_all_frame ;
+        for(const auto& point : data->object_vectors_on_canvas){
+            target_center_on_all_frame.x += point.x;
+            target_center_on_all_frame.y += point.y;
+        }
+        target_center_on_all_frame.x /= static_cast<int>(data->object_vectors_on_canvas.size());
+        target_center_on_all_frame.y /= static_cast<int>(data->object_vectors_on_canvas.size());
+        
+        delta_pos = delta_Position(data, frame_BGR, target_center_on_all_frame);
+            if (delta_pos.has_value()){
+                break;
+            }
+        }
+        if (delta_pos.has_value()){
+            send_direction_to_MCU(uart, delta_pos.value(), 3, "RP5", "END");
         }
     return 0;
 }
