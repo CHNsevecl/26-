@@ -1,4 +1,12 @@
 #include "ImagePg.hpp"
+
+namespace {
+
+bool isCircleDescriptor(const std::vector<cv::Point>& points) {
+    return points.size() == 2 && points[1].y == 0;
+}
+
+}
 #include <algorithm>
 
 static std::vector<cv::Point> orderRectanglePoints(const std::vector<cv::Point>& points) {
@@ -307,9 +315,15 @@ std::optional<ROI_with_oringin> find_target_object(cv::Mat& frame_BGR, cv::Mat& 
 
     int Point_num = lines;
     if (target_index != -1){
-        if(lines == 0){//圆的情况，只有两个点，直接取第一个点,因为第二个点是(Radius, 0)
-            Point_num = 1;
+        if(lines == 0){//圆的情况：第0个点存圆心，第1个点存半径，y 作为无效占位
+            Point_num = 2;
             Position_data.target_absolute_position.push_back(cv::Point((Position_data.object_ROI_data[Position_data.target_index][0].x ) + Position_data.roi_vector[Position_data.target_index].x, (Position_data.object_ROI_data[Position_data.target_index][0].y ) + Position_data.roi_vector[Position_data.target_index].y));
+            if (Position_data.object_ROI_data[Position_data.target_index].size() > 1) {
+                Position_data.target_absolute_position.push_back(cv::Point(Position_data.object_ROI_data[Position_data.target_index][1].x, 0));
+            }
+            else {
+                Position_data.target_absolute_position.push_back(cv::Point(-1, 0));
+            }
         }
         else{
             for (int i =0;i<Position_data.object_ROI_data[Position_data.target_index].size();i++){ 
@@ -374,10 +388,20 @@ std::optional<ROI_with_oringin> find_object_positon_on_canvas(cv::Mat& frame_BGR
     data->canvas_index = canvas_index;
 
     std::vector<cv::Point> source_points;
-    source_points.reserve(data->target_absolute_position.size());
-    for (const auto& point : data->target_absolute_position) {
-        if (point != cv::Point(-1, -1)) {
-            source_points.push_back(point);
+    if (isCircleDescriptor(data->target_absolute_position)) {
+        const cv::Point& center = data->target_absolute_position[0];
+        const cv::Point& radius_point = data->target_absolute_position[1];
+        if (center != cv::Point(-1, -1) && radius_point.x >= 0) {
+            source_points.push_back(center);
+            source_points.push_back(cv::Point(center.x + radius_point.x, center.y));
+        }
+    }
+    else {
+        source_points.reserve(data->target_absolute_position.size());
+        for (const auto& point : data->target_absolute_position) {
+            if (point != cv::Point(-1, -1)) {
+                source_points.push_back(point);
+            }
         }
     }
 
