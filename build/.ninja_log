@@ -1,7 +1,7 @@
 # ninja log v6
-2	6988	1779766202211046254	CMakeFiles/hit.dir/src/uart.cpp.o	207fd5c11094d193
-22	10854	1779808329440968197	CMakeFiles/hit.dir/main.cpp.o	dd5d8b1480eb57a3
-23	10875	1779808329444968209	CMakeFiles/hit.dir/src/Laser_Position.cpp.o	c7e2c6e4d714b1e4
-23	11037	1779808329444968209	CMakeFiles/hit.dir/src/ImagePg.cpp.o	5c1dbc367ec76
-23	10876	1779808329444968209	CMakeFiles/hit.dir/QA/Answer.cpp.o	a18d7c9a5bada014
-11037	13471	1779808340457001365	hit	824f6d0bf2371810
+3	4946	1779818533134513915	CMakeFiles/hit.dir/src/uart.cpp.o	207fd5c11094d193
+2	4911	1779818533134513915	CMakeFiles/hit.dir/main.cpp.o	dd5d8b1480eb57a3
+4	3047	1779818573671217032	CMakeFiles/hit.dir/src/Laser_Position.cpp.o	c7e2c6e4d714b1e4
+3	5607	1779818533134513915	CMakeFiles/hit.dir/src/ImagePg.cpp.o	5c1dbc367ec76
+4912	8322	1779818538042600174	CMakeFiles/hit.dir/QA/Answer.cpp.o	a18d7c9a5bada014
+3047	3884	1779818576711268929	hit	824f6d0bf2371810

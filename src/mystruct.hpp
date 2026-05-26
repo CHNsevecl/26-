@@ -25,6 +25,7 @@ struct ROI_with_oringin{
     int target_index = -1;
     int canvas_index = -1;
     int count_for_q3 = 0;
+    int dx = 0;
 
 };
 

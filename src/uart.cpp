@@ -20,12 +20,13 @@ void info_to_MCU(UART& uart, const std::vector<std::string>& info) {
     usleep(2500); // 2.5ms
 }
 
-void send_direction_to_MCU(UART& uart,const cv::Point& direction,int question_id,std::string start_bytes,std::string end_bytes) {
+void send_direction_to_MCU(UART& uart,const cv::Point& direction, int question_id,std::string start_bytes,std::string end_bytes) {
     vector<std::string> messages;
     messages.reserve(5);
     messages.push_back(start_bytes);
     messages.push_back(std::to_string(direction.x));
     messages.push_back(std::to_string(direction.y));
+
     messages.push_back(std::to_string(question_id));
     messages.push_back(end_bytes);
     info_to_MCU(uart, messages);

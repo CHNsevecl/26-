@@ -93,7 +93,7 @@ int Question2_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary, int 
             }
             if(start_flag){
                 start_flag = false;
-                send_direction_to_MCU(uart, delta_pos.value(), 1, "RP5", "END");
+                send_direction_to_MCU(uart, delta_pos.value(),1, "RP5", "END");
                 if(abs(delta_pos->x) < 2 && abs(delta_pos->y) < 2){
                     send_direction_to_MCU(uart, delta_pos.value(), 0, "RP5", "END");
                 }
@@ -110,7 +110,7 @@ int Question2_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary, int 
                     double cos = delta_pos->x / length;
                     cv::Point D_delta_pos = cv::Point(int(5.0*cos), int(5.0*sin));
 
-                    send_direction_to_MCU(uart, D_delta_pos, 2, "RP5", "END");
+                    send_direction_to_MCU(uart, D_delta_pos,2, "RP5", "END");
                 }
             }
         }
@@ -143,15 +143,54 @@ int Question3_Answer(UART& uart, std::optional<ROI_with_oringin>& data0, cv::Mat
         }
     }
     else{
-        
+        //data0 拼装
         find_target_object(frame_BGR, frame_binary, 4, 1);
         std::vector<std::vector<cv::Point>> contours;
         findContours_and_Draw(frame_binary, frame_BGR, contours);
         std::optional<std::vector<std::vector<cv::Point>>> target_range = selectBestContour(contours, frame_BGR, 4, 1, true);
-
+        
         if(target_range.has_value()){
+            
             target_range.value()[0] = orderRectanglePoints(target_range.value()[0]);
             data0->Contours_vertex[data0->canvas_index] = target_range.value()[0];
+            auto mapped_points = buildMappedTargetPoints(*data0);
+            if (mapped_points.has_value()) {
+                data0->object_vectors_on_canvas = mapped_points.value();
+            }
+
+            // data0 拼装完成后在画布上标记目标位置
+            if(!data0->object_vectors_on_canvas.empty()){
+                for(auto& point : data0->object_vectors_on_canvas){
+                    cv::circle(frame_BGR, point, 5, cv::Scalar(0, 255, 0), -1);
+                }
+                cv::circle(frame_BGR, data0->object_vectors_on_canvas[0], 5, cv::Scalar(0, 0, 255), -1);
+                // cv::circle(frame_BGR, data0->object_vectors_on_canvas[1], 5, cv::Scalar(0, 255, 0), -1);
+                if (data0->object_vectors_on_canvas.size() == 2) {
+                    std::optional<cv::Point> delta_pos = delta_Position(data0, frame_BGR, data0->object_vectors_on_canvas[0]);
+                    if (delta_pos.has_value()) {
+                        int bias = data0->dx;
+                        cv::Point corrected = delta_pos.value();
+                        if (bias != 0) {
+                            if (delta_pos->x >= 0) corrected += cv::Point(bias, 0);
+                            else corrected -= cv::Point(bias, 0);
+                        }
+
+                        // 先发送包含偏置的主移动，再发送不带偏置的精调
+                        send_direction_to_MCU(uart, corrected, 3, "RP5", "END");
+                        send_direction_to_MCU(uart, delta_pos.value(), 3, "RP5", "END");
+
+                        // 偏置衰减：按 10% 衰减，最小步长为 1
+                        if (bias != 0) {
+                            int sign = (bias > 0) ? 1 : -1;
+                            int decay = std::max(1, std::abs(bias) / 10);
+                            data0->dx = bias - sign * decay;
+                        }
+                    }
+                }
+
+
+
+            }
         }
     }
 

@@ -1,6 +1,8 @@
-CMakeFiles/hit.dir/main.cpp.o: \
- /home/sevecl/Desktop/C/Project/26年校赛C题/main.cpp \
- /usr/include/stdc-predef.h /usr/include/opencv4/opencv2/opencv.hpp \
+CMakeFiles/hit.dir/src/Laser_Position.cpp.o: \
+ /home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.cpp \
+ /usr/include/stdc-predef.h \
+ /home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.hpp \
+ /usr/include/opencv4/opencv2/opencv.hpp \
  /usr/include/opencv4/opencv2/opencv_modules.hpp \
  /usr/include/opencv4/opencv2/core.hpp \
  /usr/include/opencv4/opencv2/core/cvdef.h \
@@ -369,41 +371,5 @@ CMakeFiles/hit.dir/main.cpp.o: \
  /usr/include/opencv4/opencv2/video.hpp \
  /usr/include/opencv4/opencv2/video/tracking.hpp \
  /usr/include/opencv4/opencv2/video/background_segm.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/src/uart.hpp \
- /usr/include/fcntl.h /usr/include/aarch64-linux-gnu/bits/fcntl.h \
- /usr/include/aarch64-linux-gnu/bits/fcntl-linux.h \
- /usr/include/aarch64-linux-gnu/bits/types/struct_iovec.h \
- /usr/include/linux/falloc.h /usr/include/aarch64-linux-gnu/bits/stat.h \
- /usr/include/aarch64-linux-gnu/bits/struct_stat.h /usr/include/unistd.h \
- /usr/include/aarch64-linux-gnu/bits/posix_opt.h \
- /usr/include/aarch64-linux-gnu/bits/environments.h \
- /usr/include/aarch64-linux-gnu/bits/confname.h \
- /usr/include/aarch64-linux-gnu/bits/getopt_posix.h \
- /usr/include/aarch64-linux-gnu/bits/getopt_core.h \
- /usr/include/aarch64-linux-gnu/bits/unistd_ext.h \
- /usr/include/linux/close_range.h /usr/include/termios.h \
- /usr/include/aarch64-linux-gnu/bits/termios.h \
- /usr/include/aarch64-linux-gnu/bits/termios-struct.h \
- /usr/include/aarch64-linux-gnu/bits/termios-c_cc.h \
- /usr/include/aarch64-linux-gnu/bits/termios-c_iflag.h \
- /usr/include/aarch64-linux-gnu/bits/termios-c_oflag.h \
- /usr/include/aarch64-linux-gnu/bits/termios-baud.h \
- /usr/include/aarch64-linux-gnu/bits/termios-c_cflag.h \
- /usr/include/aarch64-linux-gnu/bits/termios-c_lflag.h \
- /usr/include/aarch64-linux-gnu/bits/termios-tcflow.h \
- /usr/include/aarch64-linux-gnu/bits/termios-misc.h \
- /usr/include/aarch64-linux-gnu/sys/ttydefaults.h \
- /usr/include/aarch64-linux-gnu/sys/ioctl.h \
- /usr/include/aarch64-linux-gnu/bits/ioctls.h \
- /usr/lib/linux/uapi/arm64/asm/ioctls.h /usr/include/asm-generic/ioctls.h \
- /usr/include/linux/ioctl.h /usr/lib/linux/uapi/arm64/asm/ioctl.h \
- /usr/include/asm-generic/ioctl.h \
- /usr/include/aarch64-linux-gnu/bits/ioctl-types.h \
- /home/sevecl/Desktop/C/Project/26年校赛C题/src/ImagePg.hpp \
  /usr/include/c++/14/optional \
- /home/sevecl/Desktop/C/Project/26年校赛C题/src/mystruct.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/Answer.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/../src/ImagePg.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/../src/Laser_Position.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/../src/uart.hpp
+ /home/sevecl/Desktop/C/Project/26年校赛C题/src/mystruct.hpp

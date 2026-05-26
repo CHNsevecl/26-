@@ -17,10 +17,12 @@ std::optional<cv::Point> delta_Position(std::optional<ROI_with_oringin>& Positio
     
     cv::cvtColor(frame_BGR, frame_HSV, cv::COLOR_BGR2HSV);
     cv::Mat mask_blue;
-    cv::inRange(frame_HSV, cv::Scalar(100, 30, 120), cv::Scalar(130, 255, 255), mask_blue);
-    cv::Mat kernel_blue = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3));
+    cv::inRange(frame_HSV, cv::Scalar(110, 60, 200), cv::Scalar(130, 255, 255), mask_blue);
+    cv::Mat kernel_blue = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(2, 2));
     // 只填充微小空洞，不去主动腐蚀
     cv::morphologyEx(mask_blue, mask_blue, cv::MORPH_CLOSE, kernel_blue);
+
+    cv::imshow("Mask Blue", mask_blue);
 
     struct LaserCandidate {
         cv::Point2f center;
