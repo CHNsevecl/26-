@@ -1,8 +1,8 @@
 CMakeFiles/hit.dir/QA/Answer.cpp.o: \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/Answer.cpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/QA/Answer.cpp \
  /usr/include/stdc-predef.h \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/Answer.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/../src/ImagePg.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/QA/Answer.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/QA/../src/ImagePg.hpp \
  /usr/include/opencv4/opencv2/opencv.hpp \
  /usr/include/opencv4/opencv2/opencv_modules.hpp \
  /usr/include/opencv4/opencv2/core.hpp \
@@ -373,9 +373,9 @@ CMakeFiles/hit.dir/QA/Answer.cpp.o: \
  /usr/include/opencv4/opencv2/video/tracking.hpp \
  /usr/include/opencv4/opencv2/video/background_segm.hpp \
  /usr/include/c++/14/optional \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/../src/mystruct.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/../src/Laser_Position.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/../src/uart.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/QA/../src/mystruct.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/QA/../src/Laser_Position.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/QA/../src/uart.hpp \
  /usr/include/fcntl.h /usr/include/aarch64-linux-gnu/bits/fcntl.h \
  /usr/include/aarch64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/aarch64-linux-gnu/bits/types/struct_iovec.h \

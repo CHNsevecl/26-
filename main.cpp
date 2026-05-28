@@ -15,7 +15,7 @@ int main(){
     std::string pipeline = 
     {
         "libcamerasrc camera-name=/base/axi/pcie@1000120000/rp1/i2c@88000/imx708@1a ! "
-        "video/x-raw,format=NV12,width=1700,height=600,framerate=30/1 ! "
+        "video/x-raw,format=NV12,width=1850,height=620,framerate=15/1 ! "
         "videoconvert ! video/x-raw,format=BGR ! "
         "appsink drop=true max-buffers=1 sync=false"
     };
@@ -31,17 +31,13 @@ int main(){
 
     //============初始化UART============
     UART uart;
-    UART uart2;
-    if(!uart2.init("/dev/ttyAMA2", 115200)) {
-        return -1;
-    }
     if (!uart.init("/dev/serial0", 115200)) {
         return -1;
     }
 
     int drawed_points = 0;
-    std::optional<ROI_with_oringin> data;
-    // ROI_with_oringin data;
+    // std::optional<ROI_with_oringin> data;
+    ROI_with_oringin data;
     //============处理视频流============
     while (true){
         //================ 流数据处理 =================
@@ -60,7 +56,7 @@ int main(){
         cv::threshold(frame_gray, frame_binary, 60, 255, cv::THRESH_BINARY_INV);
 
         //===============形态学去噪=======================
-        morphologyProcess(frame_binary, 1);
+        morphologyProcess(frame_binary, 3);
 
 
         //================ 流数据处理 =================
@@ -71,16 +67,16 @@ int main(){
         //user_code_begin
         
         //Q3
-        if(Question3_Answer(uart, uart2, data, frame_BGR, frame_binary) == -1){
-            break;
-        }
+        // if(Question3_Answer(uart, data, frame_BGR, frame_binary) == -1){
+        //     break;
+        // }
         // user_code_end
 
 
         // Q1
-        // if(Question1_Answer(uart, frame_BGR, frame_binary) == -1){
-        //     break;
-        // }
+        if(Question1_Answer(uart, frame_BGR, frame_binary) == -1){
+            break;
+        }
 
         // Q2
         // int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
@@ -109,6 +105,5 @@ int main(){
 
     
     uart.close_port();
-    uart2.close_port();
     return 0;
 }

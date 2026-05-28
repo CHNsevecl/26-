@@ -14,7 +14,6 @@ std::optional<ROI_with_oringin> find_target_object( cv::Mat& frame_BGR, cv::Mat&
 std::optional<ROI_with_oringin> find_object_positon_on_canvas(cv::Mat& frame_BGR, cv::Mat& frame_binary);
 void Distance_to_line_translator(ROI_with_oringin& data, std::vector<cv::Point>& object_Relate_to_Contours_vectors, std::vector<cv::Point>& object_vectors_on_canvas, int& contours_index);
 std::vector<cv::Point> orderRectanglePoints(const std::vector<cv::Point>& points);
-std::optional<std::vector<cv::Point>> buildMappedTargetPoints(const ROI_with_oringin& data);
 
 
 

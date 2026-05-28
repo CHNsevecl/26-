@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sevecl/Desktop/C/Project/26年校赛C题
+CMAKE_SOURCE_DIR = /home/sevecl/Desktop/C/Project/26校赛备份
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sevecl/Desktop/C/Project/26年校赛C题/build
+CMAKE_BINARY_DIR = /home/sevecl/Desktop/C/Project/26校赛备份/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/hit.dir/depend.make
@@ -73,74 +73,74 @@ CMakeFiles/hit.dir/codegen:
 .PHONY : CMakeFiles/hit.dir/codegen
 
 CMakeFiles/hit.dir/main.cpp.o: CMakeFiles/hit.dir/flags.make
-CMakeFiles/hit.dir/main.cpp.o: /home/sevecl/Desktop/C/Project/26年校赛C题/main.cpp
+CMakeFiles/hit.dir/main.cpp.o: /home/sevecl/Desktop/C/Project/26校赛备份/main.cpp
 CMakeFiles/hit.dir/main.cpp.o: CMakeFiles/hit.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26年校赛C题/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/hit.dir/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/main.cpp.o -MF CMakeFiles/hit.dir/main.cpp.o.d -o CMakeFiles/hit.dir/main.cpp.o -c /home/sevecl/Desktop/C/Project/26年校赛C题/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26校赛备份/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/hit.dir/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/main.cpp.o -MF CMakeFiles/hit.dir/main.cpp.o.d -o CMakeFiles/hit.dir/main.cpp.o -c /home/sevecl/Desktop/C/Project/26校赛备份/main.cpp
 
 CMakeFiles/hit.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/hit.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sevecl/Desktop/C/Project/26年校赛C题/main.cpp > CMakeFiles/hit.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sevecl/Desktop/C/Project/26校赛备份/main.cpp > CMakeFiles/hit.dir/main.cpp.i
 
 CMakeFiles/hit.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hit.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26年校赛C题/main.cpp -o CMakeFiles/hit.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26校赛备份/main.cpp -o CMakeFiles/hit.dir/main.cpp.s
 
 CMakeFiles/hit.dir/src/uart.cpp.o: CMakeFiles/hit.dir/flags.make
-CMakeFiles/hit.dir/src/uart.cpp.o: /home/sevecl/Desktop/C/Project/26年校赛C题/src/uart.cpp
+CMakeFiles/hit.dir/src/uart.cpp.o: /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp
 CMakeFiles/hit.dir/src/uart.cpp.o: CMakeFiles/hit.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26年校赛C题/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/hit.dir/src/uart.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/src/uart.cpp.o -MF CMakeFiles/hit.dir/src/uart.cpp.o.d -o CMakeFiles/hit.dir/src/uart.cpp.o -c /home/sevecl/Desktop/C/Project/26年校赛C题/src/uart.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26校赛备份/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/hit.dir/src/uart.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/src/uart.cpp.o -MF CMakeFiles/hit.dir/src/uart.cpp.o.d -o CMakeFiles/hit.dir/src/uart.cpp.o -c /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp
 
 CMakeFiles/hit.dir/src/uart.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/hit.dir/src/uart.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sevecl/Desktop/C/Project/26年校赛C题/src/uart.cpp > CMakeFiles/hit.dir/src/uart.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp > CMakeFiles/hit.dir/src/uart.cpp.i
 
 CMakeFiles/hit.dir/src/uart.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hit.dir/src/uart.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26年校赛C题/src/uart.cpp -o CMakeFiles/hit.dir/src/uart.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp -o CMakeFiles/hit.dir/src/uart.cpp.s
 
 CMakeFiles/hit.dir/src/ImagePg.cpp.o: CMakeFiles/hit.dir/flags.make
-CMakeFiles/hit.dir/src/ImagePg.cpp.o: /home/sevecl/Desktop/C/Project/26年校赛C题/src/ImagePg.cpp
+CMakeFiles/hit.dir/src/ImagePg.cpp.o: /home/sevecl/Desktop/C/Project/26校赛备份/src/ImagePg.cpp
 CMakeFiles/hit.dir/src/ImagePg.cpp.o: CMakeFiles/hit.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26年校赛C题/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/hit.dir/src/ImagePg.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/src/ImagePg.cpp.o -MF CMakeFiles/hit.dir/src/ImagePg.cpp.o.d -o CMakeFiles/hit.dir/src/ImagePg.cpp.o -c /home/sevecl/Desktop/C/Project/26年校赛C题/src/ImagePg.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26校赛备份/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/hit.dir/src/ImagePg.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/src/ImagePg.cpp.o -MF CMakeFiles/hit.dir/src/ImagePg.cpp.o.d -o CMakeFiles/hit.dir/src/ImagePg.cpp.o -c /home/sevecl/Desktop/C/Project/26校赛备份/src/ImagePg.cpp
 
 CMakeFiles/hit.dir/src/ImagePg.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/hit.dir/src/ImagePg.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sevecl/Desktop/C/Project/26年校赛C题/src/ImagePg.cpp > CMakeFiles/hit.dir/src/ImagePg.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sevecl/Desktop/C/Project/26校赛备份/src/ImagePg.cpp > CMakeFiles/hit.dir/src/ImagePg.cpp.i
 
 CMakeFiles/hit.dir/src/ImagePg.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hit.dir/src/ImagePg.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26年校赛C题/src/ImagePg.cpp -o CMakeFiles/hit.dir/src/ImagePg.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26校赛备份/src/ImagePg.cpp -o CMakeFiles/hit.dir/src/ImagePg.cpp.s
 
 CMakeFiles/hit.dir/src/Laser_Position.cpp.o: CMakeFiles/hit.dir/flags.make
-CMakeFiles/hit.dir/src/Laser_Position.cpp.o: /home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.cpp
+CMakeFiles/hit.dir/src/Laser_Position.cpp.o: /home/sevecl/Desktop/C/Project/26校赛备份/src/Laser_Position.cpp
 CMakeFiles/hit.dir/src/Laser_Position.cpp.o: CMakeFiles/hit.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26年校赛C题/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/hit.dir/src/Laser_Position.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/src/Laser_Position.cpp.o -MF CMakeFiles/hit.dir/src/Laser_Position.cpp.o.d -o CMakeFiles/hit.dir/src/Laser_Position.cpp.o -c /home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26校赛备份/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/hit.dir/src/Laser_Position.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/src/Laser_Position.cpp.o -MF CMakeFiles/hit.dir/src/Laser_Position.cpp.o.d -o CMakeFiles/hit.dir/src/Laser_Position.cpp.o -c /home/sevecl/Desktop/C/Project/26校赛备份/src/Laser_Position.cpp
 
 CMakeFiles/hit.dir/src/Laser_Position.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/hit.dir/src/Laser_Position.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.cpp > CMakeFiles/hit.dir/src/Laser_Position.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sevecl/Desktop/C/Project/26校赛备份/src/Laser_Position.cpp > CMakeFiles/hit.dir/src/Laser_Position.cpp.i
 
 CMakeFiles/hit.dir/src/Laser_Position.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hit.dir/src/Laser_Position.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.cpp -o CMakeFiles/hit.dir/src/Laser_Position.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26校赛备份/src/Laser_Position.cpp -o CMakeFiles/hit.dir/src/Laser_Position.cpp.s
 
 CMakeFiles/hit.dir/QA/Answer.cpp.o: CMakeFiles/hit.dir/flags.make
-CMakeFiles/hit.dir/QA/Answer.cpp.o: /home/sevecl/Desktop/C/Project/26年校赛C题/QA/Answer.cpp
+CMakeFiles/hit.dir/QA/Answer.cpp.o: /home/sevecl/Desktop/C/Project/26校赛备份/QA/Answer.cpp
 CMakeFiles/hit.dir/QA/Answer.cpp.o: CMakeFiles/hit.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26年校赛C题/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/hit.dir/QA/Answer.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/QA/Answer.cpp.o -MF CMakeFiles/hit.dir/QA/Answer.cpp.o.d -o CMakeFiles/hit.dir/QA/Answer.cpp.o -c /home/sevecl/Desktop/C/Project/26年校赛C题/QA/Answer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26校赛备份/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/hit.dir/QA/Answer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/QA/Answer.cpp.o -MF CMakeFiles/hit.dir/QA/Answer.cpp.o.d -o CMakeFiles/hit.dir/QA/Answer.cpp.o -c /home/sevecl/Desktop/C/Project/26校赛备份/QA/Answer.cpp
 
 CMakeFiles/hit.dir/QA/Answer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/hit.dir/QA/Answer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sevecl/Desktop/C/Project/26年校赛C题/QA/Answer.cpp > CMakeFiles/hit.dir/QA/Answer.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sevecl/Desktop/C/Project/26校赛备份/QA/Answer.cpp > CMakeFiles/hit.dir/QA/Answer.cpp.i
 
 CMakeFiles/hit.dir/QA/Answer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hit.dir/QA/Answer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26年校赛C题/QA/Answer.cpp -o CMakeFiles/hit.dir/QA/Answer.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26校赛备份/QA/Answer.cpp -o CMakeFiles/hit.dir/QA/Answer.cpp.s
 
 # Object files for target hit
 hit_OBJECTS = \
@@ -216,7 +216,7 @@ hit: /usr/lib/aarch64-linux-gnu/libopencv_photo.so.4.10.0
 hit: /usr/lib/aarch64-linux-gnu/libopencv_imgproc.so.4.10.0
 hit: /usr/lib/aarch64-linux-gnu/libopencv_core.so.4.10.0
 hit: CMakeFiles/hit.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/sevecl/Desktop/C/Project/26年校赛C题/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable hit"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/sevecl/Desktop/C/Project/26校赛备份/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable hit"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/hit.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -228,6 +228,6 @@ CMakeFiles/hit.dir/clean:
 .PHONY : CMakeFiles/hit.dir/clean
 
 CMakeFiles/hit.dir/depend:
-	cd /home/sevecl/Desktop/C/Project/26年校赛C题/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sevecl/Desktop/C/Project/26年校赛C题 /home/sevecl/Desktop/C/Project/26年校赛C题 /home/sevecl/Desktop/C/Project/26年校赛C题/build /home/sevecl/Desktop/C/Project/26年校赛C题/build /home/sevecl/Desktop/C/Project/26年校赛C题/build/CMakeFiles/hit.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/sevecl/Desktop/C/Project/26校赛备份/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sevecl/Desktop/C/Project/26校赛备份 /home/sevecl/Desktop/C/Project/26校赛备份 /home/sevecl/Desktop/C/Project/26校赛备份/build /home/sevecl/Desktop/C/Project/26校赛备份/build /home/sevecl/Desktop/C/Project/26校赛备份/build/CMakeFiles/hit.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/hit.dir/depend
 

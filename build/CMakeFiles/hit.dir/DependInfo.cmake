@@ -8,11 +8,11 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/sevecl/Desktop/C/Project/26年校赛C题/QA/Answer.cpp" "CMakeFiles/hit.dir/QA/Answer.cpp.o" "gcc" "CMakeFiles/hit.dir/QA/Answer.cpp.o.d"
-  "/home/sevecl/Desktop/C/Project/26年校赛C题/main.cpp" "CMakeFiles/hit.dir/main.cpp.o" "gcc" "CMakeFiles/hit.dir/main.cpp.o.d"
-  "/home/sevecl/Desktop/C/Project/26年校赛C题/src/ImagePg.cpp" "CMakeFiles/hit.dir/src/ImagePg.cpp.o" "gcc" "CMakeFiles/hit.dir/src/ImagePg.cpp.o.d"
-  "/home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.cpp" "CMakeFiles/hit.dir/src/Laser_Position.cpp.o" "gcc" "CMakeFiles/hit.dir/src/Laser_Position.cpp.o.d"
-  "/home/sevecl/Desktop/C/Project/26年校赛C题/src/uart.cpp" "CMakeFiles/hit.dir/src/uart.cpp.o" "gcc" "CMakeFiles/hit.dir/src/uart.cpp.o.d"
+  "/home/sevecl/Desktop/C/Project/26校赛备份/QA/Answer.cpp" "CMakeFiles/hit.dir/QA/Answer.cpp.o" "gcc" "CMakeFiles/hit.dir/QA/Answer.cpp.o.d"
+  "/home/sevecl/Desktop/C/Project/26校赛备份/main.cpp" "CMakeFiles/hit.dir/main.cpp.o" "gcc" "CMakeFiles/hit.dir/main.cpp.o.d"
+  "/home/sevecl/Desktop/C/Project/26校赛备份/src/ImagePg.cpp" "CMakeFiles/hit.dir/src/ImagePg.cpp.o" "gcc" "CMakeFiles/hit.dir/src/ImagePg.cpp.o.d"
+  "/home/sevecl/Desktop/C/Project/26校赛备份/src/Laser_Position.cpp" "CMakeFiles/hit.dir/src/Laser_Position.cpp.o" "gcc" "CMakeFiles/hit.dir/src/Laser_Position.cpp.o.d"
+  "/home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp" "CMakeFiles/hit.dir/src/uart.cpp.o" "gcc" "CMakeFiles/hit.dir/src/uart.cpp.o.d"
   "" "hit" "gcc" "CMakeFiles/hit.dir/link.d"
   )
 

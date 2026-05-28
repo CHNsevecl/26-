@@ -118,7 +118,7 @@ static std::optional<std::vector<cv::Point>> mapPointsBetweenQuads(
     return destination_points;
 }
 
-std::optional<std::vector<cv::Point>> buildMappedTargetPoints(const ROI_with_oringin& data) {
+static std::optional<std::vector<cv::Point>> buildMappedTargetPoints(const ROI_with_oringin& data) {
     if (data.target_index < 0 || data.target_index >= static_cast<int>(data.Contours_vertex.size())) {
         return std::nullopt;
     }

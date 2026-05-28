@@ -1,5 +1,5 @@
 CMakeFiles/hit.dir/main.cpp.o: \
- /home/sevecl/Desktop/C/Project/26年校赛C题/main.cpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/main.cpp \
  /usr/include/stdc-predef.h /usr/include/opencv4/opencv2/opencv.hpp \
  /usr/include/opencv4/opencv2/opencv_modules.hpp \
  /usr/include/opencv4/opencv2/core.hpp \
@@ -369,7 +369,7 @@ CMakeFiles/hit.dir/main.cpp.o: \
  /usr/include/opencv4/opencv2/video.hpp \
  /usr/include/opencv4/opencv2/video/tracking.hpp \
  /usr/include/opencv4/opencv2/video/background_segm.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/src/uart.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.hpp \
  /usr/include/fcntl.h /usr/include/aarch64-linux-gnu/bits/fcntl.h \
  /usr/include/aarch64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/aarch64-linux-gnu/bits/types/struct_iovec.h \
@@ -399,11 +399,11 @@ CMakeFiles/hit.dir/main.cpp.o: \
  /usr/include/linux/ioctl.h /usr/lib/linux/uapi/arm64/asm/ioctl.h \
  /usr/include/asm-generic/ioctl.h \
  /usr/include/aarch64-linux-gnu/bits/ioctl-types.h \
- /home/sevecl/Desktop/C/Project/26年校赛C题/src/ImagePg.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/src/ImagePg.hpp \
  /usr/include/c++/14/optional \
- /home/sevecl/Desktop/C/Project/26年校赛C题/src/mystruct.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/Answer.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/../src/ImagePg.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/../src/Laser_Position.hpp \
- /home/sevecl/Desktop/C/Project/26年校赛C题/QA/../src/uart.hpp
+ /home/sevecl/Desktop/C/Project/26校赛备份/src/mystruct.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/src/Laser_Position.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/QA/Answer.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/QA/../src/ImagePg.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/QA/../src/Laser_Position.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/QA/../src/uart.hpp

@@ -1,7 +1,7 @@
 CMakeFiles/hit.dir/src/Laser_Position.cpp.o: \
- /home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.cpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/src/Laser_Position.cpp \
  /usr/include/stdc-predef.h \
- /home/sevecl/Desktop/C/Project/26年校赛C题/src/Laser_Position.hpp \
+ /home/sevecl/Desktop/C/Project/26校赛备份/src/Laser_Position.hpp \
  /usr/include/opencv4/opencv2/opencv.hpp \
  /usr/include/opencv4/opencv2/opencv_modules.hpp \
  /usr/include/opencv4/opencv2/core.hpp \
@@ -372,4 +372,4 @@ CMakeFiles/hit.dir/src/Laser_Position.cpp.o: \
  /usr/include/opencv4/opencv2/video/tracking.hpp \
  /usr/include/opencv4/opencv2/video/background_segm.hpp \
  /usr/include/c++/14/optional \
- /home/sevecl/Desktop/C/Project/26年校赛C题/src/mystruct.hpp
+ /home/sevecl/Desktop/C/Project/26校赛备份/src/mystruct.hpp
