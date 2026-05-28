@@ -17,15 +17,22 @@ std::optional<cv::Point> delta_Position(std::optional<ROI_with_oringin>& Positio
     
     cv::cvtColor(frame_BGR, frame_HSV, cv::COLOR_BGR2HSV);
     cv::Mat mask_blue;
-    cv::inRange(frame_HSV, cv::Scalar(110, 60, 200), cv::Scalar(130, 255, 255), mask_blue);
+    cv::Mat mask_white;
+    cv::Mat mask_blue_or_white;
+    cv::inRange(frame_HSV, cv::Scalar(95, 25, 120), cv::Scalar(135, 255, 255), mask_blue);
+    cv::inRange(frame_HSV, cv::Scalar(0, 0, 250), cv::Scalar(180, 80, 255), mask_white);
+    cv::bitwise_or(mask_blue, mask_white, mask_blue_or_white);
     cv::Mat kernel_blue = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3));
-    // 只填充微小空洞，不去主动腐蚀
-    cv::morphologyEx(mask_blue, mask_blue, cv::MORPH_CLOSE, kernel_blue);
+    // 先补小孔，再轻微扩张，以兼容弱蓝光和白色高亮点
+    cv::morphologyEx(mask_blue_or_white, mask_blue_or_white, cv::MORPH_CLOSE, kernel_blue);
+    cv::Mat kernel_dilate = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3));
+    cv::dilate(mask_blue_or_white, mask_blue_or_white, kernel_dilate);
 
-    cv::imshow("Mask Blue", mask_blue);
+    cv::imshow("Mask Blue", mask_blue_or_white);
 
     struct LaserCandidate {
         cv::Point2f center;
+        float radius = 0.0f;
         double score = 0.0;
         double area = 0.0;
         double circularity = 0.0;
@@ -34,10 +41,11 @@ std::optional<cv::Point> delta_Position(std::optional<ROI_with_oringin>& Positio
     std::vector<LaserCandidate> candidates;
     cv::Point delta_Position;
     std::vector<std::vector<cv::Point>> contours_blue;
-    cv::findContours(mask_blue, contours_blue, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+    cv::findContours(mask_blue_or_white, contours_blue, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
     static bool has_last_center = false;
     static cv::Point2f last_center(0.0f, 0.0f);
+    static int missed_frames = 0;
 
     const double max_jump_distance = 60.0;
 
@@ -45,21 +53,29 @@ std::optional<cv::Point> delta_Position(std::optional<ROI_with_oringin>& Positio
         cv::Moments m = cv::moments(contour);
         double area = cv::contourArea(contour);
         double perimeter = cv::arcLength(contour, true);
-        if (m.m00 <= 0 || area < 2.0 || perimeter <= 0.0) {
+        if (m.m00 <= 0 || area <= 150.0 || perimeter <= 0.0) {
+            continue;
+        }
+
+        cv::Point2f center;
+        float radius = 0.0f;
+        cv::minEnclosingCircle(contour, center, radius);
+        if (radius <= 0.0f) {
             continue;
         }
 
         double circularity = 4.0 * CV_PI * area / (perimeter * perimeter);
-        if (circularity < 0.15) {
+
+        if (circularity < 0.25) {
             continue;
         }
 
-        cv::Point2f center(m.m10 / m.m00, m.m01 / m.m00);
         double score = area * circularity;
-        candidates.push_back({center, score, area, circularity});
+        candidates.push_back({center, radius, score, area, circularity});
     }
 
     if (!candidates.empty()) {
+        missed_frames = 0;
         int best_index = -1;
         double best_value = std::numeric_limits<double>::infinity();
 
@@ -96,6 +112,11 @@ std::optional<cv::Point> delta_Position(std::optional<ROI_with_oringin>& Positio
         
         return std::make_optional(delta_Position);
     }
+
+            missed_frames++;
+            if (missed_frames >= 1) {
+                has_last_center = false;
+            }
 
     return std::nullopt;
 }

@@ -15,7 +15,7 @@ int main(){
     std::string pipeline = 
     {
         "libcamerasrc camera-name=/base/axi/pcie@1000120000/rp1/i2c@88000/imx708@1a ! "
-        "video/x-raw,format=NV12,width=1750,height=640,framerate=20/1 ! "
+        "video/x-raw,format=NV12,width=1700,height=600,framerate=30/1 ! "
         "videoconvert ! video/x-raw,format=BGR ! "
         "appsink drop=true max-buffers=1 sync=false"
     };
@@ -60,7 +60,7 @@ int main(){
         cv::threshold(frame_gray, frame_binary, 60, 255, cv::THRESH_BINARY_INV);
 
         //===============形态学去噪=======================
-        morphologyProcess(frame_binary, 3);
+        morphologyProcess(frame_binary, 1);
 
 
         //================ 流数据处理 =================
@@ -71,7 +71,7 @@ int main(){
         //user_code_begin
         
         //Q3
-        if(Question3_Answer(uart, data, frame_BGR, frame_binary) == -1){
+        if(Question3_Answer(uart, uart2, data, frame_BGR, frame_binary) == -1){
             break;
         }
         // user_code_end
