@@ -125,40 +125,5 @@ int Question2_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary, int 
     return 0;
 }
 
-int Question3_Answer(UART& uart, std::optional<ROI_with_oringin>& data0, cv::Mat& frame_BGR, cv::Mat& frame_binary){
 
-    if(data0->count_for_q3 < 50){
-        std::optional<ROI_with_oringin> data = find_object_positon_on_canvas(frame_BGR, frame_binary);
-        if(!data.has_value()){
-            return 0 ;
-        }
-        if(data->target_index != -1){
-            data->count_for_q3 = data0->count_for_q3;
-            data0 = data;
-            for(auto& point : data->Contours_vertex[data->target_index]){
-                cv::circle(frame_BGR, point, 5, cv::Scalar(0, 255, 0), -1);
-            }
 
-            data0->count_for_q3 = data0->count_for_q3 + 1;
-            
-        }
-    }
-    else{
-        
-        find_target_object(frame_BGR, frame_binary, 4, 1);
-        std::vector<std::vector<cv::Point>> contours;
-        findContours_and_Draw(frame_binary, frame_BGR, contours);
-        std::optional<std::vector<std::vector<cv::Point>>> target_range = selectBestContour(contours, frame_BGR, 4, 1, true);
-
-        if(target_range.has_value()){
-            target_range.value()[0] = orderRectanglePoints(target_range.value()[0]);
-            data0->Contours_vertex[data0->canvas_index] = target_range.value()[0];
-        }
-    }
-
-    
-
-    
-        
-    return 0;
-}

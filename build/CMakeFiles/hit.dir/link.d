@@ -3,8 +3,8 @@ hit: \
   /usr/lib/gcc/aarch64-linux-gnu/14/../../../aarch64-linux-gnu/crti.o \
   /usr/lib/gcc/aarch64-linux-gnu/14/crtbeginS.o \
   CMakeFiles/hit.dir/main.cpp.o \
-  CMakeFiles/hit.dir/src/uart.cpp.o \
   CMakeFiles/hit.dir/src/ImagePg.cpp.o \
+  CMakeFiles/hit.dir/src/uart.cpp.o \
   CMakeFiles/hit.dir/src/Laser_Position.cpp.o \
   CMakeFiles/hit.dir/QA/Answer.cpp.o \
   /usr/lib/aarch64-linux-gnu/libopencv_stitching.so.4.10.0 \
@@ -382,9 +382,9 @@ hit: \
 
 CMakeFiles/hit.dir/main.cpp.o:
 
-CMakeFiles/hit.dir/src/uart.cpp.o:
-
 CMakeFiles/hit.dir/src/ImagePg.cpp.o:
+
+CMakeFiles/hit.dir/src/uart.cpp.o:
 
 CMakeFiles/hit.dir/src/Laser_Position.cpp.o:
 

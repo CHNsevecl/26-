@@ -9,8 +9,8 @@ find_package(OpenCV REQUIRED)
 
 add_executable(hit 
             main.cpp 
-            src/uart.cpp
             src/ImagePg.cpp
+            src/uart.cpp
             src/Laser_Position.cpp
             QA/Answer.cpp)
 

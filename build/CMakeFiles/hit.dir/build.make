@@ -86,24 +86,10 @@ CMakeFiles/hit.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hit.dir/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26校赛备份/main.cpp -o CMakeFiles/hit.dir/main.cpp.s
 
-CMakeFiles/hit.dir/src/uart.cpp.o: CMakeFiles/hit.dir/flags.make
-CMakeFiles/hit.dir/src/uart.cpp.o: /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp
-CMakeFiles/hit.dir/src/uart.cpp.o: CMakeFiles/hit.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26校赛备份/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/hit.dir/src/uart.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/src/uart.cpp.o -MF CMakeFiles/hit.dir/src/uart.cpp.o.d -o CMakeFiles/hit.dir/src/uart.cpp.o -c /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp
-
-CMakeFiles/hit.dir/src/uart.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/hit.dir/src/uart.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp > CMakeFiles/hit.dir/src/uart.cpp.i
-
-CMakeFiles/hit.dir/src/uart.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hit.dir/src/uart.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp -o CMakeFiles/hit.dir/src/uart.cpp.s
-
 CMakeFiles/hit.dir/src/ImagePg.cpp.o: CMakeFiles/hit.dir/flags.make
 CMakeFiles/hit.dir/src/ImagePg.cpp.o: /home/sevecl/Desktop/C/Project/26校赛备份/src/ImagePg.cpp
 CMakeFiles/hit.dir/src/ImagePg.cpp.o: CMakeFiles/hit.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26校赛备份/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/hit.dir/src/ImagePg.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26校赛备份/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/hit.dir/src/ImagePg.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/src/ImagePg.cpp.o -MF CMakeFiles/hit.dir/src/ImagePg.cpp.o.d -o CMakeFiles/hit.dir/src/ImagePg.cpp.o -c /home/sevecl/Desktop/C/Project/26校赛备份/src/ImagePg.cpp
 
 CMakeFiles/hit.dir/src/ImagePg.cpp.i: cmake_force
@@ -113,6 +99,20 @@ CMakeFiles/hit.dir/src/ImagePg.cpp.i: cmake_force
 CMakeFiles/hit.dir/src/ImagePg.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hit.dir/src/ImagePg.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26校赛备份/src/ImagePg.cpp -o CMakeFiles/hit.dir/src/ImagePg.cpp.s
+
+CMakeFiles/hit.dir/src/uart.cpp.o: CMakeFiles/hit.dir/flags.make
+CMakeFiles/hit.dir/src/uart.cpp.o: /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp
+CMakeFiles/hit.dir/src/uart.cpp.o: CMakeFiles/hit.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sevecl/Desktop/C/Project/26校赛备份/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/hit.dir/src/uart.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hit.dir/src/uart.cpp.o -MF CMakeFiles/hit.dir/src/uart.cpp.o.d -o CMakeFiles/hit.dir/src/uart.cpp.o -c /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp
+
+CMakeFiles/hit.dir/src/uart.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/hit.dir/src/uart.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp > CMakeFiles/hit.dir/src/uart.cpp.i
+
+CMakeFiles/hit.dir/src/uart.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hit.dir/src/uart.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sevecl/Desktop/C/Project/26校赛备份/src/uart.cpp -o CMakeFiles/hit.dir/src/uart.cpp.s
 
 CMakeFiles/hit.dir/src/Laser_Position.cpp.o: CMakeFiles/hit.dir/flags.make
 CMakeFiles/hit.dir/src/Laser_Position.cpp.o: /home/sevecl/Desktop/C/Project/26校赛备份/src/Laser_Position.cpp
@@ -145,8 +145,8 @@ CMakeFiles/hit.dir/QA/Answer.cpp.s: cmake_force
 # Object files for target hit
 hit_OBJECTS = \
 "CMakeFiles/hit.dir/main.cpp.o" \
-"CMakeFiles/hit.dir/src/uart.cpp.o" \
 "CMakeFiles/hit.dir/src/ImagePg.cpp.o" \
+"CMakeFiles/hit.dir/src/uart.cpp.o" \
 "CMakeFiles/hit.dir/src/Laser_Position.cpp.o" \
 "CMakeFiles/hit.dir/QA/Answer.cpp.o"
 
@@ -154,8 +154,8 @@ hit_OBJECTS = \
 hit_EXTERNAL_OBJECTS =
 
 hit: CMakeFiles/hit.dir/main.cpp.o
-hit: CMakeFiles/hit.dir/src/uart.cpp.o
 hit: CMakeFiles/hit.dir/src/ImagePg.cpp.o
+hit: CMakeFiles/hit.dir/src/uart.cpp.o
 hit: CMakeFiles/hit.dir/src/Laser_Position.cpp.o
 hit: CMakeFiles/hit.dir/QA/Answer.cpp.o
 hit: CMakeFiles/hit.dir/build.make

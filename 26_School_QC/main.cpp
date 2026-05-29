@@ -108,10 +108,10 @@ int main()
         std::cout << "X: " << dx << " Y: " << dy << std::endl;
         std::cout << mx <<" " << my <<std::endl;
 
-        if (std::abs(dx) <= 10 && std::abs(dx) > 1) {
+        if (std::abs(dx) <= 20 && std::abs(dx) > 1) {
             mx = 1;
         }
-        if (std::abs(dy) <= 10 && std::abs(dy) > 1) {
+        if (std::abs(dy) <= 20 && std::abs(dy) > 1) {
             my = 1;
         }
         

@@ -31,7 +31,11 @@ int main(){
 
     //============初始化UART============
     UART uart;
-    if (!uart.init("/dev/serial0", 115200)) {
+    UART uart2;
+    if(!uart.init("/dev/serial0", 115200)){
+        return -1;
+    }
+    if (!uart2.init("/dev/ttyAMA2", 115200)) {
         return -1;
     }
 
@@ -74,20 +78,20 @@ int main(){
 
 
         // Q1
-        if(Question1_Answer(uart, frame_BGR, frame_binary) == -1){
-            break;
-        }
-
-        // Q2
-        // int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
-        // if(returned_num == -1){
-        //     std::cout << "All points have been drawn!" << std::endl;
+        // if(Question1_Answer(uart, frame_BGR, frame_binary) == -1){
         //     break;
         // }
-        // else if(returned_num == 1){
-        //     sleep(0.1);
-        // }
-        // drawed_points += returned_num;
+
+        // Q2
+        int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
+        if(returned_num == -1){
+            std::cout << "All points have been drawn!" << std::endl;
+            break;
+        }
+        else if(returned_num == 1){
+            sleep(0.1);
+        }
+        drawed_points += returned_num;
 
         // if(data.roi_vector.size() > 0) {
         //     cv::Mat frame_BGR_copy = frame_BGR.clone();
@@ -105,5 +109,6 @@ int main(){
 
     
     uart.close_port();
+    uart2.close_port();
     return 0;
 }
