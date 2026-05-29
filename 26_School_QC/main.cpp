@@ -19,6 +19,8 @@
 #define acc_y 150
 #define vel_y 150
 
+std::string question_id = "";
+
 void print_debug(const std::string& s) {
     std::cout << "[";
     for (unsigned char c : s) {
@@ -43,6 +45,8 @@ void core1_entry(){
         if(datas[0] != "RP5" || datas.back() != "END" || datas.size() < 4){
             continue;
         }
+
+        question_id = datas[3];
 
         // for(int i = 0;i < datas.size();i++){
         //     print_debug(datas[i]);
@@ -73,9 +77,11 @@ int main()
     ZDT_EmmV5 zdt;
     PIDController pid_x;
 
-    pid_x.setGains(0.09,0.0001,0.0001);
-    pid_x.setIntegralLimits(-1.0,0.0);
+    pid_x.setGains(0.09,0.0,0.0001);
+    pid_x.setIntegralLimits(-255.0,255.0);
     pid_x.setOutputLimits(-255,255);
+    
+    pid_x.enableDebug(true);
     PIDController pid_y;
     pid_y.setGains(0.09,0.0001,0.00001);
     pid_y.setIntegralLimits(-1.0,1.0);
@@ -100,13 +106,39 @@ int main()
             continue;
         }
 
-        
+        if (question_id == "3" ) {
+            if(std::abs(dy)<=10 ){
+                if(dx > 0){
+                    pid_y.setKp(0.00);
+                    pid_x.setKp(0.15);
+                    pid_x.setKi(0.25);
+                    pid_x.setIntegralLimitsAndApply(0,12.0);
+                }
+                else{
+                    pid_x.reset();
+                }
+            }
+            
+            else{
+                
+                // pid_x.setKp(0.09);
+                pid_y.setKp(0.09);
+                // pid_x.setKi(0.0);
+            }
+        }
+        else{
+            pid_y.setKp(0.09);
+            pid_x.setIntegralLimitsAndApply(0.0,0.0);
+            pid_x.reset();
+        }
 
         int mx = pid_x.calculateAuto(dx,0.0);
         int my = pid_y.calculateAuto(dy,0.0);
 
         std::cout << "X: " << dx << " Y: " << dy << std::endl;
         std::cout << mx <<" " << my <<std::endl;
+        // std::cout << std::abs(dy) << std::endl;
+        std::cout << "-----------------------------" << std::endl;
 
         if (std::abs(dx) <= 20 && std::abs(dx) > 1) {
             mx = 1;
@@ -114,6 +146,7 @@ int main()
         if (std::abs(dy) <= 20 && std::abs(dy) > 1) {
             my = 1;
         }
+        
         
 
         if (dx < 0){

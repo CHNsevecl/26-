@@ -34,6 +34,8 @@ std::optional<cv::Point> delta_Position(std::optional<ROI_with_oringin>& Positio
     std::vector<std::vector<cv::Point>> contours_blue;
     cv::findContours(mask_blue, contours_blue, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
+    cv::imshow("Blue Mask", mask_blue);
+
     static bool has_last_center = false;
     static cv::Point2f last_center(0.0f, 0.0f);
 
@@ -43,7 +45,7 @@ std::optional<cv::Point> delta_Position(std::optional<ROI_with_oringin>& Positio
         cv::Moments m = cv::moments(contour);
         double area = cv::contourArea(contour);
         double perimeter = cv::arcLength(contour, true);
-        if (m.m00 <= 0 || area < 2.0 || perimeter <= 0.0) {
+        if (m.m00 <= 0 || area < 50.0 || perimeter <= 0.0) {
             continue;
         }
 

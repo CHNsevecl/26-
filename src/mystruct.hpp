@@ -21,10 +21,15 @@ struct ROI_with_oringin{
     std::vector<std::vector<cv::Point>> Contours_vertex;
     std::vector<cv::Point> target_absolute_position;
     std::vector<cv::Point> object_vectors_on_canvas;
-
+    
+    //以下是Question3需要的变量
     int target_index = -1;
     int canvas_index = -1;
     int count_for_q3 = 0;
+    int dx = 0;
+    int dy = 0;
+    std::vector<std::vector<cv::Point>> Pre_Contours_vertex;
+
 
 };
 

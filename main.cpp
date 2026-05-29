@@ -40,8 +40,8 @@ int main(){
     }
 
     int drawed_points = 0;
-    // std::optional<ROI_with_oringin> data;
-    ROI_with_oringin data;
+    std::optional<ROI_with_oringin> data;
+    // ROI_with_oringin data;
     //============处理视频流============
     while (true){
         //================ 流数据处理 =================
@@ -71,9 +71,9 @@ int main(){
         //user_code_begin
         
         //Q3
-        // if(Question3_Answer(uart, data, frame_BGR, frame_binary) == -1){
-        //     break;
-        // }
+        if(Question3_Answer(uart, uart2, data, frame_BGR, frame_binary) == -1){
+            break;
+        }
         // user_code_end
 
 
@@ -83,15 +83,15 @@ int main(){
         // }
 
         // Q2
-        int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
-        if(returned_num == -1){
-            std::cout << "All points have been drawn!" << std::endl;
-            break;
-        }
-        else if(returned_num == 1){
-            sleep(0.1);
-        }
-        drawed_points += returned_num;
+        // int returned_num = Question2_Answer(uart, frame_BGR, frame_binary, drawed_points);
+        // if(returned_num == -1){
+        //     std::cout << "All points have been drawn!" << std::endl;
+        //     break;
+        // }
+        // else if(returned_num == 1){
+        //     sleep(0.1);
+        // }
+        // drawed_points += returned_num;
 
         // if(data.roi_vector.size() > 0) {
         //     cv::Mat frame_BGR_copy = frame_BGR.clone();

@@ -105,6 +105,9 @@ public:
     
     // 设置积分项（用于手动干预）
     void setIntegral(double integral);
+
+    // 获取当前 I 输出（仅供调试）
+    double PID_Interal_out(PIDController& pid);
 };
 
 #endif // PIDCONTROLLER_H

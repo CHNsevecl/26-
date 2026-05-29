@@ -104,8 +104,7 @@ void PIDController::setIntegralLimits(double min, double max) {
 }
 
 void PIDController::setIntegralLimitsAndApply(double min, double max) {
-    setIntegralLimits(min, max);
-    if (enable_integral_limit_) integral_ = std::clamp(integral_, min_integral_, max_integral_);
+    min_i_output_ = min; max_i_output_ = max;
 }
 
 void PIDController::enableIntegralLimit(bool enable) { enable_integral_limit_ = enable; }
@@ -131,10 +130,17 @@ double PIDController::calculate(double setpoint, double measurement) {
         if (enable_integral_limit_) integral_ = std::clamp(integral_, min_integral_, max_integral_);
         integral_out = ki_ * integral_;
         // 如果已设置 I 输出范围，则对 Iout 做夹限并同步 integral_
-        if (min_i_output_ != -INFINITY || max_i_output_ != INFINITY) {
-            if (integral_out < min_i_output_) integral_out = min_i_output_;
-            else if (integral_out > max_i_output_) integral_out = max_i_output_;
-            if (ki_ != 0.0) integral_ = integral_out / ki_;
+        if(integral_out <= min_i_output_) {
+            integral_out = min_i_output_;
+            if(ki_ != 0.0) {
+                integral_ = integral_out / ki_;
+            }
+        }
+        else if (integral_out >= max_i_output_) {
+            integral_out = max_i_output_;
+            if(ki_ != 0.0) {
+                integral_ = integral_out / ki_;
+            }
         }
     }
 
@@ -191,4 +197,8 @@ void PIDController::setIntegralTarget(double target) {
     if (enable_integral_limit_) target = std::clamp(target, min_integral_, max_integral_);
     integral_target_ = target;
     integral_target_active_ = true;
+}
+
+double PIDController::PID_Interal_out(PIDController& pid) {
+    return integral_;
 }
