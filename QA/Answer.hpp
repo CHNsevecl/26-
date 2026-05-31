@@ -11,5 +11,6 @@
 int Question1_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary);
 int Question2_Answer(UART& uart, cv::Mat& frame_BGR, cv::Mat& frame_binary, int drawed_points);
 int Question3_Answer(UART& uart, UART& uart2, std::optional<ROI_with_oringin>& data0, cv::Mat& frame_BGR, cv::Mat& frame_binary);
+int Question4_Answer(UART& uart, UART& uart2, std::optional<ROI_with_oringin>& data0, cv::Mat& frame_BGR, cv::Mat& frame_binary, int drawed_points, bool& finish_flag);
 
 #endif

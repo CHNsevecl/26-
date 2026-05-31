@@ -16,11 +16,15 @@ std::optional<cv::Point> delta_Position(std::optional<ROI_with_oringin>& Positio
     }
     
     cv::cvtColor(frame_BGR, frame_HSV, cv::COLOR_BGR2HSV);
+    
+    // 单层阈值：只保留激光高亮核心
     cv::Mat mask_blue;
     cv::inRange(frame_HSV, cv::Scalar(100, 30, 220), cv::Scalar(130, 255, 255), mask_blue);
-    cv::Mat kernel_blue = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3));
-    // 只填充微小空洞，不去主动腐蚀
-    cv::morphologyEx(mask_blue, mask_blue, cv::MORPH_CLOSE, kernel_blue);
+    
+    // 形态学处理：小核膨胀连接断裂，闭运算填洞
+    cv::Mat kernel = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3));
+    cv::dilate(mask_blue, mask_blue, kernel);
+    cv::morphologyEx(mask_blue, mask_blue, cv::MORPH_CLOSE, kernel);
 
     struct LaserCandidate {
         cv::Point2f center;
@@ -55,29 +59,30 @@ std::optional<cv::Point> delta_Position(std::optional<ROI_with_oringin>& Positio
         }
 
         cv::Point2f center(m.m10 / m.m00, m.m01 / m.m00);
-        double score = area * circularity;
-        candidates.push_back({center, score, area, circularity});
+        candidates.push_back({center, circularity, area, circularity});  // score = circularity（取最圆的）
     }
 
     if (!candidates.empty()) {
         int best_index = -1;
-        double best_value = std::numeric_limits<double>::infinity();
 
+        // 优先选离上一帧最近的（追踪连续性）
         if (has_last_center) {
+            double min_dist = max_jump_distance;
             for (int i = 0; i < static_cast<int>(candidates.size()); ++i) {
                 double distance = cv::norm(candidates[i].center - last_center);
-                if (distance < best_value && distance <= max_jump_distance) {
-                    best_value = distance;
+                if (distance < min_dist) {
+                    min_dist = distance;
                     best_index = i;
                 }
             }
         }
 
+        // 没有历史或没找到近的点，选最圆的
         if (best_index == -1) {
-            best_value = -1.0;
+            double best_circularity = -1.0;
             for (int i = 0; i < static_cast<int>(candidates.size()); ++i) {
-                if (candidates[i].score > best_value) {
-                    best_value = candidates[i].score;
+                if (candidates[i].circularity > best_circularity) {
+                    best_circularity = candidates[i].circularity;
                     best_index = i;
                 }
             }
@@ -103,7 +108,7 @@ std::optional<cv::Point> delta_Position(std::optional<ROI_with_oringin>& Positio
 
 
 cv::Point find_target_center_on_all_frame(ROI_with_oringin& object_data){
-    cv::Point target_center_on_all_frame;
+    cv::Point target_center_on_all_frame(0, 0);
     if (object_data.target_index < 0 || object_data.target_index >= static_cast<int>(object_data.object_ROI_data.size())) {
         return target_center_on_all_frame;
     }
@@ -111,15 +116,13 @@ cv::Point find_target_center_on_all_frame(ROI_with_oringin& object_data){
         return target_center_on_all_frame;
     }
 
-    int Point_num = object_data.object_ROI_data[object_data.target_index].size();
-    // std::cout << Point_num << std::endl;
-    if(Point_num == 2){//圆的情况，只有两个点，直接取第一个点,因为第二个点是(Radius, 0)
-        Point_num = 1;
+    int Point_num = static_cast<int>(object_data.object_ROI_data[object_data.target_index].size());
+    // 圆的情况，只有两个点，直接取第一个点（圆心），第二个点是(Radius, 0)
+    if(Point_num == 2){
         target_center_on_all_frame.x = object_data.target_absolute_position[0].x;
         target_center_on_all_frame.y = object_data.target_absolute_position[0].y;
     }
     else{
-        // std::cout << "Point_num: " << Point_num << std::endl;
         for(const auto& point : object_data.target_absolute_position){
             target_center_on_all_frame.x += point.x;
             target_center_on_all_frame.y += point.y;

@@ -86,6 +86,7 @@ int main()
     pid_y.setGains(0.09,0.0001,0.00001);
     pid_y.setIntegralLimits(-1.0,1.0);
     pid_y.setOutputLimits(-255,255);
+    pid_y.enableDebug(true);
 
     zdt.EmmV5_Init();
     int release_count = 0;
@@ -126,6 +127,13 @@ int main()
                 // pid_x.setKi(0.0);
             }
         }
+        else if(question_id == "4"){
+            std::cout << "Question 4" << std::endl;
+            pid_y.setKp(0.09);
+            pid_x.setKp(0.09);
+            pid_x.setKi(0.5);
+            pid_x.setIntegralLimitsAndApply(0,12.0);
+        }
         else{
             pid_y.setKp(0.09);
             pid_x.setIntegralLimitsAndApply(0.0,0.0);
@@ -140,14 +148,16 @@ int main()
         // std::cout << std::abs(dy) << std::endl;
         std::cout << "-----------------------------" << std::endl;
 
+        
+            
         if (std::abs(dx) <= 20 && std::abs(dx) > 1) {
             mx = 1;
         }
         if (std::abs(dy) <= 20 && std::abs(dy) > 1) {
             my = 1;
         }
-        
-        
+    
+            
 
         if (dx < 0){
             // zdt.EmmV5_Pos_Control(addr1, 0x00, mx, acc_x, abs(dx), 0x00, 0x00);

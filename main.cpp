@@ -40,8 +40,9 @@ int main(){
     }
 
     int drawed_points = 0;
-    std::optional<ROI_with_oringin> data;
-    // ROI_with_oringin data;
+    bool finish_flag = false;
+    std::optional<ROI_with_oringin> data4;
+    std::optional<ROI_with_oringin> data3;
     //============处理视频流============
     while (true){
         //================ 流数据处理 =================
@@ -68,13 +69,16 @@ int main(){
         
 
 
-        //user_code_begin
-        
-        //Q3
-        if(Question3_Answer(uart, uart2, data, frame_BGR, frame_binary) == -1){
+        // Q4 - 画布移动 + 云台逐点画画（同Q2逻辑，画完回到第一个点后结束）
+        int returned_num = Question4_Answer(uart, uart2, data4, frame_BGR, frame_binary, drawed_points, finish_flag);
+        if(returned_num == -1){
+            std::cout << "Q4 - Back to first point! Exiting." << std::endl;
+            send_direction_to_MCU(uart, cv::Point(0, 0), 0, "RP5", "END");
             break;
         }
-        // user_code_end
+        else if(returned_num == 1){
+            drawed_points++;
+        }
 
 
         // Q1
@@ -93,6 +97,11 @@ int main(){
         // }
         // drawed_points += returned_num;
 
+        // //Q3
+        // if(Question3_Answer(uart, uart2, data3, frame_BGR, frame_binary) == -1){
+        //     break;
+        // }
+
         // if(data.roi_vector.size() > 0) {
         //     cv::Mat frame_BGR_copy = frame_BGR.clone();
         //     frame_BGR_copy = frame_BGR_copy(data.roi_vector[0]);
@@ -107,7 +116,7 @@ int main(){
         }
     }
 
-    
+    send_direction_to_MCU(uart, cv::Point(0, 0), 0, "RP5", "END");
     uart.close_port();
     uart2.close_port();
     return 0;

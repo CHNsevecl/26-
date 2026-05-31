@@ -344,7 +344,7 @@ std::optional<ROI_with_oringin> find_target_object(cv::Mat& frame_BGR, cv::Mat& 
         if (target_range.value()[i][0].x > 0){
             cv::Rect box = cv::boundingRect(target_range.value()[i]);
             box_vector.push_back(box);
-            cv::Rect roi = cv::Rect(std::min(frame_BGR.cols - 1, box.x+10), std::min(frame_BGR.rows - 1, box.y+10), std::max(0, box.width-10), std::max(0, box.height-10));
+            cv::Rect roi = cv::Rect(std::min(frame_BGR.cols - 1, box.x+18), std::min(frame_BGR.rows - 1, box.y+18), std::max(0, box.width-50), std::max(0, box.height-50));
             Position_data.roi_vector.push_back(roi);
         }
         else{
